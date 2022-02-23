@@ -1,14 +1,14 @@
 # Submarine
 
-Submarine is a **WIP** PVR for Usenet and BitTorrent users.
+Submarine is a **Work in Progress** PVR for Usenet and BitTorrent users.
 It can monitor multiple feeds for new releases of your favorite shows and movies and will grab, sort and rename them. It can also be configured to automatically upgrade the quality of files already downloaded when a better quality format becomes available (DVD -> Bluray as example).
 
-Submarine is also heavily inspired by [Sonarr](https://github.com/Sonarr/Sonarr/) & [Radarr](https://github.com/Radarr/Radarr/) and tries to polish already good working parts while iterating over the *not so good* working parts.
+Submarine is also based on [Sonarr](https://github.com/Sonarr/Sonarr/) & [Radarr](https://github.com/Radarr/Radarr/) but is completly written from scratch to have a fresh and up to date codebase.
 
 ## Planned Features
 
 ### Sonarr/Radarr like Features
-- [ ] Support for major Platforms (Windows, Linux, macOS)
+- [ ] Support for major Platforms (Windows, Linux, macOS, Docker)
 - [ ] Monitoring multiple feeds for new Releases
 - [ ] Automatic Quality upgrade
 - [ ] Failed download handling
@@ -22,6 +22,7 @@ Submarine is also heavily inspired by [Sonarr](https://github.com/Sonarr/Sonarr/
 - [ ] Swapping out the metadata provider for different epsiode/season numbering
 - [ ] A nicer UI which is responsive even when Submarine does heavy work in the background
 - [ ] No long running HTTP requests to the frontend which could timeout due to Reverse Proxy settings
+- [x] Fully Documented API with OpenAPI implementation
 
 
 ## Getting Started
