@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Submarine.Core.MediaFile;
 
 public static class MediaFile
 {
-	public static readonly HashSet<string> MediaFileExtensions = new()
+	public static readonly IImmutableSet<string> MediaFileExtensions = new HashSet<string>()
 	{
 		".webm",
 		".m4v",
@@ -52,5 +53,5 @@ public static class MediaFile
 		".ts",
 		".wtv",
 		".m2ts"
-	};
+	}.ToImmutableHashSet();
 }
