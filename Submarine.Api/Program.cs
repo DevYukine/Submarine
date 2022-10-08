@@ -1,10 +1,14 @@
 using System.Text.Json.Serialization;
 using AspNetCore.ExceptionHandler;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Enrichers;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
+using Submarine.Api.Models.Database;
+using Submarine.Api.Repository;
+using Submarine.Api.Services;
 using Submarine.Core.Languages;
 using Submarine.Core.Parser;
 using Submarine.Core.Parser.Release;
@@ -45,6 +49,8 @@ builder.Services.AddControllers().AddJsonOptions(opts =>
 {
 	opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
+
+// Parser
 builder.Services.AddSingleton<IParser<BaseRelease>, ReleaseParserService>();
 builder.Services.AddSingleton<IParser<TorrentRelease>, TorrentReleaseParserService>();
 builder.Services.AddSingleton<IParser<UsenetRelease>, UsenetReleaseParserService>();
@@ -52,7 +58,16 @@ builder.Services.AddSingleton<IParser<string?>, ReleaseGroupParserService>();
 builder.Services.AddSingleton<IParser<IReadOnlyList<Language>>, LanguageParserService>();
 builder.Services.AddSingleton<IParser<QualityModel>, QualityParserService>();
 builder.Services.AddSingleton<IParser<StreamingProvider?>, StreamingProviderParserService>();
+
+// Validator
 builder.Services.AddSingleton<UsenetReleaseValidatorService>();
+
+// Repository
+builder.Services.AddScoped<IProviderRepository, ProviderRepository>();
+
+// Service
+builder.Services.AddScoped<ProviderService>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -90,7 +105,24 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddHealthChecks();
 
+builder.Services.AddDbContext<SubmarineDatabaseContext, PostgresDatabaseContext>();
+
 var app = builder.Build();
+
+using (var scope = app.Services.GetService<IServiceScopeFactory>()?.CreateScope())
+{
+	var logger = app.Services.GetRequiredService<ILogger<SubmarineDatabaseContext>>();
+
+	try
+	{
+		scope?.ServiceProvider.GetRequiredService<SubmarineDatabaseContext>().Database.Migrate();
+	}
+	catch (Exception ex)
+	{
+		logger.LogError(ex, "An error occurred while running migrations on the database");
+		throw;
+	}
+}
 
 if (app.Environment.IsDevelopment())
 {
