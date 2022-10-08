@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Submarine.Core.Quality;
@@ -13,6 +13,7 @@ public class QualityEdgeCases
 		new(StringComparer.OrdinalIgnoreCase)
 		{
 			{ "SubsPlease", QualitySource.WEB_DL },
+			{ "HorribleSubs", QualitySource.WEB_DL },
 			{ "Erai-Raws", QualitySource.WEB_DL }
 		};
 }
