@@ -27,7 +27,7 @@ public record CreateProviderRequest
 				ApiKey = ApiKey,
 				Priority = Priority
 			},
-			Protocol.USENET => new UsenetProvider
+			Protocol.USENET => new UsenetIndexer
 			{
 				Name = Name,
 				Mode = Mode,
