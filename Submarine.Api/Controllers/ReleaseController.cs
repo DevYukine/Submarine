@@ -25,7 +25,7 @@ public class ReleaseController : ControllerBase
 	}
 
 	[HttpGet]
-	public IActionResult GetAsync([FromQuery, Required] string title, [FromQuery, Required] Protocol protocol)
+	public Task<IActionResult> GetAsync([FromQuery, Required] string title, [FromQuery, Required] Protocol protocol)
 	{
 		BaseRelease parsed = protocol switch
 		{
@@ -35,6 +35,6 @@ public class ReleaseController : ControllerBase
 			_ => throw new ArgumentOutOfRangeException(nameof(protocol), protocol, null)
 		};
 
-		return Ok(parsed);
+		return Task.FromResult(Ok(parsed) as IActionResult);
 	}
 }
