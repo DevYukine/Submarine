@@ -19,7 +19,7 @@ public record CreateProviderRequest
 	public Provider ToProvider()
 		=> Protocol switch
 		{
-			Protocol.BITTORRENT => new BittorrentProvider
+			Protocol.BITTORRENT => new BittorrentTracker
 			{
 				Name = Name,
 				Mode = Mode,
