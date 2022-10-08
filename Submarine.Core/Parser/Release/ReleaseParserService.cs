@@ -494,12 +494,9 @@ public class ReleaseParserService : IParser<BaseRelease>
 		if (seasons != null || episodes != null || absoluteEpisodes != null)
 		{
 			type = ReleaseType.SERIES;
-			IReadOnlyList<int> parsedSeasons = new List<int>();
-			IReadOnlyList<int> parsedEpisodes = new List<int>();
-			IReadOnlyList<int> parsedAbsoluteEpisodes = new List<int>();
-			if (seasons != null) parsedSeasons = (IReadOnlyList<int>)seasons;
-			if (episodes != null) parsedEpisodes = (IReadOnlyList<int>)episodes;
-			if (absoluteEpisodes != null) parsedAbsoluteEpisodes = (IReadOnlyList<int>)absoluteEpisodes;
+			var parsedSeasons = seasons != null ? (IReadOnlyList<int>)seasons : new List<int>();
+			var parsedEpisodes = episodes != null ? (IReadOnlyList<int>)episodes : new List<int>();
+			var parsedAbsoluteEpisodes = absoluteEpisodes != null ? (IReadOnlyList<int>)absoluteEpisodes : new List<int>();
 			seriesReleaseData = new SeriesReleaseData
 			{
 				Seasons = parsedSeasons,
