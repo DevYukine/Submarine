@@ -19,14 +19,17 @@ var builder = WebApplication.CreateBuilder(args);
 const string logTemplate =
 	"[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] [{SourceContext}] {Message:lj}\n{Exception}";
 
-builder.Host.UseSerilog((context, _, loggerConfiguration) =>
+builder.Host.UseSerilog((_, _, loggerConfiguration) =>
 {
+	var loggerConfig = new ConfigurationBuilder()
+		.SetBasePath(Directory.GetCurrentDirectory())
+		.AddJsonFile("appsettings.json")
+		.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json",
+			true)
+		.Build();
+
 	loggerConfiguration
-		.MinimumLevel.Is(context.HostingEnvironment.EnvironmentName == "Development"
-			? LogEventLevel.Debug
-			: LogEventLevel.Information)
-		.MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-		.MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+		.ReadFrom.Configuration(loggerConfig)
 		.Enrich.WithThreadId()
 		.Enrich.WithThreadName()
 		.Enrich.WithProperty(ThreadNameEnricher.ThreadNamePropertyName, "Main")
@@ -34,7 +37,7 @@ builder.Host.UseSerilog((context, _, loggerConfiguration) =>
 		.WriteTo.Console(
 			outputTemplate: logTemplate,
 			theme: SystemConsoleTheme.Colored)
-		.WriteTo.Async(a => a.File("log.txt", rollingInterval: RollingInterval.Day, outputTemplate: logTemplate));
+		.WriteTo.Async(a => a.File("logs/log.txt", rollingInterval: RollingInterval.Day, outputTemplate: logTemplate));
 });
 
 // Add services to the container.
