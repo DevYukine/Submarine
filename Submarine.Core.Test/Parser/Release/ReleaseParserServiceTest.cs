@@ -1,3 +1,4 @@
+using System;
 using Submarine.Core.Parser;
 using Submarine.Core.Parser.Release;
 using Submarine.Core.Release;
@@ -29,10 +30,30 @@ public class ReleaseParserServiceTest
 		"Title Someone Returns", new[] { "Title Someone Returns" })]
 	public void Parse_ShouldParseAliases_WhenTitleContainsAKA(string input, string title, string[] aliases)
 	{
-		var res = _instance.Parse(input);
+		var parsed = _instance.Parse(input);
 
-		Assert.Equal(input, res.FullTitle);
-		Assert.Equal(title, res.Title);
-		Assert.Equal(aliases, res.Aliases);
+		Assert.Equal(input, parsed.FullTitle);
+		Assert.Equal(title, parsed.Title);
+		Assert.Equal(aliases, parsed.Aliases);
+	}
+	
+	[Theory]
+	[InlineData("Anime S01 2021 1080p WEB-DL AVC AAC 2.0 Dual Audio -ZR-", "Anime")]
+	[InlineData("The Anime Title (Japanese Alias) S01 2021 1080p WEB-DL AVC AAC 2.0 Dual Audio -ZR-", "The Anime Title")]
+	[InlineData("The Anime Title (Japanese Alias) S04E18 2022 1080p WEB-DL AVC AAC 2.0 Dual Audio -ZR-", "The Anime Title")]
+	public void Parse_ShouldParseTitle_WhenReleaseIsAnime(string input, string title)
+	{
+		var parsed = _instance.Parse(input);
+		
+		Assert.Equal(title, parsed.Title);
+	}
+
+	[Theory]
+	[InlineData("[HatSubs] Anime Title 1004 [E63F2984].mkv", 1004)]
+	public void Parse_ShouldParseAbsoluteEpisode_WhenReleaseIsAnime(string input, int absoluteEpisode)
+	{
+		var parsed = _instance.Parse(input);
+
+		Assert.Contains(absoluteEpisode, parsed.SeriesReleaseData?.AbsoluteEpisodes ?? throw new InvalidOperationException());
 	}
 }

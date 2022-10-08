@@ -9,4 +9,6 @@ public record SeriesReleaseData
 	public IReadOnlyList<int> Seasons { get; init; }
 
 	public IReadOnlyList<int> Episodes { get; init; }
+	
+	public IReadOnlyList<int> AbsoluteEpisodes { get; init; }
 }

@@ -141,6 +141,9 @@ public class ReleaseParserService : IParser<BaseRelease>
 			@"^(?<title>.+?)(?:(?:[-_\W](?<![()\[!]))+S?(?<season>(?<!\d+)(?:\d{1,2})(?!\d+))(?:[ex]|\W[ex]|_){1,2}(?<episode>\d{2,3}(?!\d+|(?:[ex]|\W[ex]|_|-){1,2}\d+))).+?(?:\[.+?\])(?!\\)",
 			RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
+		//Anime - Title (Optional Alias) Season/Episode Year
+		new(@"^(?<title>.+?)[-_. ](?<alias>\(.+?\))?[-_. ]?(S?(?<season>(?<!\d+)(?:\d{1,2}|\d{4})(?!\d+))(?:(?:[-_ ]?[ex])(?<episode>\d{2,3}(?!\d+)))?)[-_. ](?<titleyear>\d{4})[-_. ]", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+		
 		//Anime - Title Season EpisodeNumber + Absolute Episode Number [SubGroup]
 		new(
 			@"^(?<title>.+?)(?:[-_\W](?<![()\[!]))+(?:S?(?<season>(?<!\d+)\d{1,2}(?!\d+))(?:(?:[ex]|\W[ex]|-){1,2}(?<episode>(?<!\d+)\d{2}(?!\d+)))+)[-_. (]+?(?:[-_. ]?(?<absoluteepisode>(?<!\d+)\d{3}(\.\d{1,2})?(?!\d+|[pi])))+.+?\[(?<subgroup>.+?)\](?:$|\.mkv)",
@@ -210,6 +213,10 @@ public class ReleaseParserService : IParser<BaseRelease>
 			@"^(?<title>.+?)(?:\W+S(?<season>(?<!\d+)(?:\d{1,2})(?!\d+))\W+(?:(?:Part\W?|(?<!\d+\W+)e)(?<seasonpart>\d{1,2}(?!\d+)))+)",
 			RegexOptions.IgnoreCase | RegexOptions.Compiled),
 		
+		//Anime - Title 4-digit Absolute Episode Number [SubGroup]
+		new(@"^(?<title>.+?)[-_. ]+(?<absoluteepisode>(?<!\d+)\d{4}(?!\d+))[-_. ]\[(?<subgroup>.+?)\]",
+			RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
 		//Mini-Series with year in title, treated as season 1, episodes are labelled as Part01, Part 01, Part.1
 		new(@"^(?<title>.+?\d{4})(?:\W+(?:(?:Part\W?|e)(?<episode>\d{1,2}(?!\d+)))+)",
 			RegexOptions.IgnoreCase | RegexOptions.Compiled),
@@ -463,7 +470,7 @@ public class ReleaseParserService : IParser<BaseRelease>
 
 		var simpleTitle = SimpleTitleRegex.Replace(releaseTitle);
 
-		var (main, aliases, season, episode, absoluteEpisode, group, hash) = ParseTitle(simpleTitle);
+		var (main, aliases, seasons, episodes, absoluteEpisodes, group, hash) = ParseTitle(simpleTitle);
 
 		var languages = _languageParser.Parse(input);
 		var quality = _qualityParser.Parse(input);
@@ -477,13 +484,24 @@ public class ReleaseParserService : IParser<BaseRelease>
 				input);
 
 		var type = ReleaseType.UNKNOWN;
-		SeriesReleaseData seriesReleaseData = null;
-		if (season != null || episode != null || absoluteEpisode != null)
+		SeriesReleaseData? seriesReleaseData = null;
+		if (seasons != null || episodes != null || absoluteEpisodes != null)
 		{
 			type = ReleaseType.SERIES;
+			IReadOnlyList<int> parsedSeasons = new List<int>();
+			IReadOnlyList<int> parsedEpisodes = new List<int>();
+			IReadOnlyList<int> parsedAbsoluteEpisodes = new List<int>();
+			if (seasons != null) parsedSeasons = (IReadOnlyList<int>)seasons;
+			if (episodes != null) parsedEpisodes = (IReadOnlyList<int>)episodes;
+			if (absoluteEpisodes != null) parsedAbsoluteEpisodes = (IReadOnlyList<int>)absoluteEpisodes;
+			seriesReleaseData = new SeriesReleaseData
+			{
+				Seasons = parsedSeasons,
+				Episodes = parsedEpisodes,
+				AbsoluteEpisodes = parsedAbsoluteEpisodes
+			};
 		}
 
-		
 		var release = new BaseRelease
 		{
 			FullTitle = input,
@@ -510,6 +528,7 @@ public class ReleaseParserService : IParser<BaseRelease>
 		var titles = AlternativeTitleRegex
 			.Split(unbracketedName)
 			.Where(alternativeName => alternativeName.IsNotNullOrWhitespace())
+			.Select(alias => alias.Replace(".", " "))
 			.ToList();
 
 		// Use last part of the splitted Title to go on and take others as aliases.
@@ -522,37 +541,87 @@ public class ReleaseParserService : IParser<BaseRelease>
 
 			if (match.Count == 0) continue;
 
-			var matched = match[0];
-
-			var titleGroup = matched.Groups["title"];
-			var aliasGroup = matched.Groups["alias"];
-			var seasonGroup = matched.Groups["season"];
-			var episodeGroup = matched.Groups["episode"];
-			var absoluteEpisodeGroup = matched.Groups["absoluteepisode"];
-			var subgroupMatchGroup = matched.Groups["subgroup"];
-			var hashGroup = matched.Groups["hash"];
-
-			var title = titleGroup.Value.NormalizeReleaseTitle();
-
-			title = RequestInfoRegex.Replace(title, "");
-
-			if (aliasGroup.Success)
+			foreach (Match matched in match)
 			{
-				titles.Add(aliasGroup.Value.NormalizeReleaseTitle()); 	
+				var title = matched.Groups["title"].Value;
+				var episodes = new List<int>();
+				var seasons = new List<int>();
+				var absoluteEpisodes = new List<int>();
+				var specialAbsoluteEpisodes = new List<decimal>();
+				string? group = null;
+				string? hash = null;
+				var special = false;
+				
+				var episodeCaptures = matched.Groups["episode"].Captures.ToList();
+				var absoluteEpisodeCaptures = matched.Groups["absoluteepisode"].Captures.ToList();
+				
+				//Allows use to return a list of 0 episodes (We can handle that as a full season release)
+				if (episodeCaptures.Any())
+				{
+					var first = episodeCaptures.First().Value.ToInteger();
+					var last = episodeCaptures.Last().Value.ToInteger();
+
+					if (first > last)
+					{
+						throw new InvalidReleaseException("First episode is greater than last one (invalid release or multiple seasons maybe?)");
+					}
+
+					var count = last - first + 1;
+					episodes.AddRange(Enumerable.Range(first, count));
+				}
+				
+				if (absoluteEpisodeCaptures.Any())
+				{
+					var first = absoluteEpisodeCaptures.First().Value.ToDecimal();
+					var last = absoluteEpisodeCaptures.Last().Value.ToDecimal();
+
+					if (first > last)
+					{
+						throw new InvalidReleaseException("First absolute episode is greater than last one (invalid release or multiple seasons maybe?)");
+					}
+
+					if (first % 1 != 0 || last % 1 != 0)
+					{
+						if (absoluteEpisodeCaptures.Count != 1)
+							throw new InvalidReleaseException("Multiple matches not allowed for specials");
+
+						specialAbsoluteEpisodes.Add(first);
+						special = true;
+					}
+					else
+					{
+						var count = last - first + 1;
+						absoluteEpisodes.AddRange(Enumerable.Range((int)first, (int)count).ToArray());
+
+						if (matched.Groups["special"].Success)
+						{
+							special = true;
+						}
+					}
+				}
+				
+				var subGroup = matched.Groups["subgroup"];
+
+				if (subGroup.Success)
+				{
+					group = subGroup.Value;
+				}
+				
+				var hashGroup = matched.Groups["hash"];
+
+				if (hashGroup.Success)
+				{
+					var hashValue = hashGroup.Value.Trim('[', ']');
+
+					if (!hashValue.Equals("1280x720"))
+					{
+						hash = hashValue;
+					}
+				}
+
+				if (title.IsNotNullOrWhitespace())
+					return new TitleMetadata(title, titles.Select(t => t.NormalizeReleaseTitle()).ToList(), seasons, episodes, absoluteEpisodes, group, hash);	
 			}
-
-			var season = seasonGroup.Success ? int.Parse(seasonGroup.Value) : (int?) null;
-			
-			var episode = episodeGroup.Success ? int.Parse(episodeGroup.Value) : (int?)null;
-			
-			var absoluteEpisode = absoluteEpisodeGroup.Success ? int.Parse(absoluteEpisodeGroup.Value) : (int?)null;
-			
-			var hash = hashGroup.Success ? hashGroup.Value : null;
-
-			var group = subgroupMatchGroup.Success ? subgroupMatchGroup.Value : null;
-
-			if (title.IsNotNullOrWhitespace())
-				return new TitleMetadata(title, titles.Select(t => t.NormalizeReleaseTitle()).ToList(), season, episode, absoluteEpisode, group, hash);
 		}
 
 		throw new NotParsableReleaseException("does not match any regex");
