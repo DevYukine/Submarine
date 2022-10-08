@@ -1,6 +1,7 @@
 using System;
 using Submarine.Core.Parser;
 using Submarine.Core.Parser.Release;
+using Submarine.Core.Quality;
 using Submarine.Core.Release;
 using Xunit;
 using Xunit.Abstractions;
@@ -55,5 +56,26 @@ public class ReleaseParserServiceTest
 		var parsed = _instance.Parse(input);
 
 		Assert.Contains(absoluteEpisode, parsed.SeriesReleaseData?.AbsoluteEpisodes ?? throw new InvalidOperationException());
+	}
+
+	[Theory]
+	[InlineData("[HorribleSubs] Anime - 12 [1080p].mkv", QualitySource.WEB_DL)]
+	[InlineData("[SubsPlease] Anime - 14 (1080p) [3168B4D7].mkv", QualitySource.WEB_DL)]
+	[InlineData("[Erai-raws] Anime 2nd Season - 11 [1080p][Multiple Subtitle] [ENG][POR-BR][SPA-LA][SPA][GER][ITA][RUS]", QualitySource.WEB_DL)]
+	public void Parse_ShouldApplyEdgeCaseReleaseGroupQualitySourceMapping_WhenReleaseHasUnknownSourceAndGroupMatches(
+		string input, QualitySource expected)
+	{
+		var parsed = _instance.Parse(input);
+		
+		Assert.Equal(expected, parsed.Quality.Resolution.Source);
+	}
+
+	[Theory]
+	[InlineData("[Erai-raws] Anime - 01 ~ 24 [BD 720p][Multiple Subtitle]", QualitySource.BLURAY)]
+	public void Parse_ShouldNotApplyEdgeCaseReleaseGroupQualitySourceMapping_IfReleaseSpecifiesQualitySource(string input, QualitySource expected)
+	{
+		var parsed = _instance.Parse(input);
+		
+		Assert.Equal(expected, parsed.Quality.Resolution.Source);
 	}
 }

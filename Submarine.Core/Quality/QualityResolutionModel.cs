@@ -15,9 +15,9 @@ public class QualityResolutionModel
 		.SelectMany(i => i)
 		.ToArray();
 
-	public QualitySource? Source { get; }
+	public QualitySource? Source { get; set; }
 
-	public QualityResolution? Resolution { get; }
+	public QualityResolution? Resolution { get; set; }
 
 	public string Name
 		=> $"{QualitySourceName ?? Source.ToString()}{(Resolution != null ? $"-{ResolutionHumanReadable}" : "")}";

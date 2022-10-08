@@ -250,9 +250,9 @@ public class QualityParserService : IParser<QualityModel>
 
 		if (resolution.HasValue)
 		{
-			_logger.LogDebug("{Input} matched Resolution but no Source, default to TV", normalizedName);
+			_logger.LogDebug("{Input} matched Resolution but no Source", normalizedName);
 
-			return new QualityResolutionModel(QualitySource.TV, resolution);
+			return new QualityResolutionModel(QualitySource.UNKNOWN, resolution);
 		}
 
 		var match = OtherSourceRegex.Match(normalizedName);

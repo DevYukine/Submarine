@@ -91,6 +91,8 @@ public class QualityParserServiceTest
 	[InlineData("The.Series.S03E06.HDTV-WiDE")]
 	[InlineData("Series.S10E27.WS.DSR.XviD-2HD")]
 	[InlineData("The.Series.S03.TVRip.XviD-NOGRP")]
+	[InlineData("The Series S01E04 DSR x264 2HD")]
+	[InlineData("The Series S01E04 Series Death Train DSR x264 MiNDTHEGAP")]
 	public void Parse_ShouldReturnQualitySourceTV_WhenReleaseIsTV(string input)
 		=> AssertQualitySource(input, QualitySource.TV);
 
@@ -99,10 +101,8 @@ public class QualityParserServiceTest
 	[InlineData("[HorribleSubs] The Series - 32 [480p]")]
 	[InlineData("[CR] The Series - 004 [480p][48CE2D0F]")]
 	[InlineData("[Hatsuyuki] The Series - 363 [848x480][ADE35E38]")]
-	[InlineData("The Series S01E04 DSR x264 2HD")]
-	[InlineData("The Series S01E04 Series Death Train DSR x264 MiNDTHEGAP")]
-	public void Parse_ShouldReturnQualitySourceTV_WhenNoQualitySourceFound(string input)
-		=> AssertQualitySource(input, QualitySource.TV);
+	public void Parse_ShouldReturnQualitySourceUNKNOWN_WhenNoQualitySourceFound(string input)
+		=> AssertQualitySource(input, QualitySource.UNKNOWN);
 
 	[Theory]
 	[InlineData("IT.DO.BE.QUIET.Part.II.2020.THAI.2160p.UHD.BLURAY.X265-HOA")]

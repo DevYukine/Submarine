@@ -4,6 +4,8 @@ namespace Submarine.Core.Quality;
 
 public enum QualitySource
 {
+	UNKNOWN,
+	
 	CAM,
 
 	[Resolution(QualityResolution.R480_P, QualityResolution.R720_P, QualityResolution.R1080_P,
