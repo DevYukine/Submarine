@@ -82,8 +82,10 @@ builder.Services.AddSwaggerGen(c =>
 		}
 	});
 
-	var filePath = Path.Combine(AppContext.BaseDirectory, "Submarine.Api.xml");
-	c.IncludeXmlComments(filePath);
+	var apiFilePath = Path.Combine(AppContext.BaseDirectory, "Submarine.Api.xml");
+	var coreFilePath = Path.Combine(AppContext.BaseDirectory, "Submarine.Core.xml");
+	c.IncludeXmlComments(apiFilePath, true);
+	c.IncludeXmlComments(coreFilePath);
 });
 
 builder.Services.AddHealthChecks();
