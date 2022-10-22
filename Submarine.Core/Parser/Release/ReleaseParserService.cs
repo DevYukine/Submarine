@@ -44,7 +44,7 @@ public class ReleaseParserService : IParser<BaseRelease>
 			"[${subgroup}] ${title} - ${episode} ", RegexOptions.Compiled)
 	};
 
-	private static readonly Regex[] ReportTitleRegex =
+	private static readonly Regex[] ReportSeriesTitleRegex =
 	{
 		// Daily episode with year in series title and air time after date (Plex DVR format)
 		new(
@@ -538,7 +538,7 @@ public class ReleaseParserService : IParser<BaseRelease>
 		var parsableTitle = titles.Last();
 		titles.RemoveAt(titles.Count - 1);
 
-		foreach (var regex in ReportTitleRegex)
+		foreach (var regex in ReportSeriesTitleRegex)
 		{
 			var match = regex.Matches(parsableTitle);
 
