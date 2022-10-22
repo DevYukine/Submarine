@@ -111,11 +111,11 @@ var app = builder.Build();
 
 using (var scope = app.Services.GetService<IServiceScopeFactory>()?.CreateScope())
 {
-	var logger = app.Services.GetRequiredService<ILogger<SubmarineDatabaseContext>>();
+	var logger = app.Services.GetRequiredService<ILogger<PostgresDatabaseContext>>();
 
 	try
 	{
-		scope?.ServiceProvider.GetRequiredService<SubmarineDatabaseContext>().Database.Migrate();
+		scope?.ServiceProvider.GetRequiredService<PostgresDatabaseContext>().Database.Migrate();
 	}
 	catch (Exception ex)
 	{
