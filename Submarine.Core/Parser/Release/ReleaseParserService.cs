@@ -555,9 +555,15 @@ public class ReleaseParserService : IParser<BaseRelease>
 				string? group = null;
 				string? hash = null;
 				var special = false;
-				
+
+				var seasonCaptures = matched.Groups["season"].Captures.ToList();
 				var episodeCaptures = matched.Groups["episode"].Captures.ToList();
 				var absoluteEpisodeCaptures = matched.Groups["absoluteepisode"].Captures.ToList();
+
+				if (seasonCaptures.Any())
+				{
+					seasons.AddRange(seasonCaptures.Select(s => s.Value.ToInteger()));
+				}
 				
 				//Allows use to return a list of 0 episodes (We can handle that as a full season release)
 				if (episodeCaptures.Any())
