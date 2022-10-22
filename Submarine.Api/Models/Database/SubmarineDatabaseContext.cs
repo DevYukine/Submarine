@@ -15,6 +15,14 @@ public class SubmarineDatabaseContext : DbContext
 	/// Configuration of this Database Context
 	/// </summary>
 	protected readonly IConfiguration Configuration;
+	
+	protected override void OnModelCreating(ModelBuilder builder)
+	{
+		builder.Entity<BittorrentTracker>();
+		builder.Entity<UsenetIndexer>();
+
+		base.OnModelCreating(builder);
+	}
 
 	/// <inheritdoc />
 	public SubmarineDatabaseContext(DbContextOptions options, IConfiguration configuration) : base(options)
