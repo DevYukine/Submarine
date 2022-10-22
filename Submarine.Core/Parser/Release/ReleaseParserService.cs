@@ -470,7 +470,7 @@ public class ReleaseParserService : IParser<BaseRelease>
 
 		var simpleTitle = SimpleTitleRegex.Replace(releaseTitle);
 
-		var (main, aliases, seasons, episodes, absoluteEpisodes, group, hash) = ParseTitle(simpleTitle);
+		var (main, aliases, seasons, episodes, absoluteEpisodes, year, group, hash) = ParseTitle(simpleTitle);
 
 		var languages = _languageParser.Parse(input);
 		var quality = _qualityParser.Parse(input);
