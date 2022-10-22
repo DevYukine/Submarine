@@ -547,6 +547,7 @@ public class ReleaseParserService : IParser<BaseRelease>
 			foreach (Match matched in match)
 			{
 				var title = matched.Groups["title"].Value;
+				var year = matched.Groups["titleyear"]?.Value;
 				var episodes = new List<int>();
 				var seasons = new List<int>();
 				var absoluteEpisodes = new List<int>();
@@ -623,7 +624,7 @@ public class ReleaseParserService : IParser<BaseRelease>
 				}
 
 				if (title.IsNotNullOrWhitespace())
-					return new TitleMetadata(title, titles.Select(t => t.NormalizeReleaseTitle()).ToList(), seasons, episodes, absoluteEpisodes, group, hash);	
+					return new TitleMetadata(title, titles.Select(t => t.NormalizeReleaseTitle()).ToList(), seasons, episodes, absoluteEpisodes, year, group, hash);	
 			}
 		}
 
