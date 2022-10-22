@@ -13,6 +13,11 @@ public class QualityParserServiceTest
 		=> _instance = new QualityParserService(new XunitLogger<QualityParserService>(output));
 
 	[Theory]
+	[InlineData("Series Name S03 1080p Blu-ray AVC DTS-HD MA 5.1-JUSTAPRE")]
+	public void Parse_ShouldReturnQualitySourceBlurayDisc_WhenReleaseIsBlurayDisc(string input)
+		=> AssertQualitySource(input, QualitySource.BLURAY_DISK);
+	
+	[Theory]
 	[InlineData("Movie Name 1978 1080p BluRay REMUX AVC FLAC 1.0-BLURANiUM")]
 	[InlineData("Series!!! on ICE - S01E12[JP BD Remux][ENG subs]")]
 	[InlineData("Series.Title.S01E08.The.Well.BluRay.1080p.AVC.DTS-HD.MA.5.1.REMUX-FraMeSToR")]

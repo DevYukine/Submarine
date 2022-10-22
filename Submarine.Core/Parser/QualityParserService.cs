@@ -73,6 +73,12 @@ public class QualityParserService : IParser<QualityModel>
 
 	private static readonly Regex RemuxRegex = new(@"\b(?<remux>(BD)?[-_. ]?Remux)\b",
 		RegexOptions.Compiled | RegexOptions.IgnoreCase);
+	
+	private static readonly Regex FullBlurayDiscRegex = new(@"\b(COMPLETE|ISO|BDISO|BD25|BD50|BR.?DISK)\b",
+		RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+	private static readonly Regex FullBlurayCodecsRegex =
+		new(@"[-. _](HEVC|AVC)[-. _]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
 	private readonly ILogger<QualityParserService> _logger;
 
@@ -108,6 +114,7 @@ public class QualityParserService : IParser<QualityModel>
 		var sourceMatch = sourceMatches.LastOrDefault();
 		var codecRegex = CodecRegex.Match(normalizedName);
 		var remuxMatch = RemuxRegex.IsMatch(normalizedName);
+		var fullDiscMatch = FullBlurayDiscRegex.IsMatch(normalizedName);
 
 		if (sourceMatch is { Success: true })
 		{
@@ -124,6 +131,14 @@ public class QualityParserService : IParser<QualityModel>
 					return new QualityResolutionModel(QualitySource.BLURAY, QualityResolution.R480_P);
 				}
 
+				if (fullDiscMatch)
+				{
+					_logger.LogDebug("{Input} matched FullBlurayDiscRegex, setting source to bluray disc",
+						normalizedName);
+
+					return new QualityResolutionModel(QualitySource.BLURAY_DISK, resolution);
+				}
+
 				if (remuxMatch)
 				{
 					_logger.LogDebug("{Input} matched Remux", normalizedName);
@@ -134,6 +149,15 @@ public class QualityParserService : IParser<QualityModel>
 
 					return new QualityResolutionModel(QualitySource.BLURAY_REMUX,
 						resolution ?? QualityResolution.R1080_P);
+				}
+				
+				// Handle Edge cases where there is no indicator if its a full disc or not besides the codecs
+				if (FullBlurayCodecsRegex.IsMatch(normalizedName))
+				{
+					_logger.LogDebug("{Input} found no remux in name but AVC/HEVC as codec, setting source to bluray disc instead",
+						normalizedName);
+
+					return new QualityResolutionModel(QualitySource.BLURAY_DISK, resolution);
 				}
 
 				if (resolution == null)
