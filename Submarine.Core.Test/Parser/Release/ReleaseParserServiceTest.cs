@@ -45,8 +45,32 @@ public class ReleaseParserServiceTest
 	public void Parse_ShouldParseTitle_WhenReleaseIsAnime(string input, string title)
 	{
 		var parsed = _instance.Parse(input);
-		
+
 		Assert.Equal(title, parsed.Title);
+	}
+
+	[Theory]
+	[InlineData("Series S05 720p BluRay DTS 5.1 x264-DEMAND")]
+	[InlineData("The Series AKA The Alias 2020 S01 1080p WEB-DL DD 5.1 H.264-NTb")]
+	[InlineData("Some.French.Series.Name.S01E01.Parte.01.1080p.HMAX.WEB-DL.DD2.0.x264-alfaHD")]
+	[InlineData("Long.Anime.S13E1037.1080p.WEB.H264-SENPAI")]
+	public void Parse_ShouldIdentifySeries_WhenReleaseIsSeries(string input)
+	{
+		var parsed = _instance.Parse(input);
+		
+		Assert.Equal(ReleaseType.SERIES, parsed.Type);
+	}
+	
+	[Theory]
+	[InlineData("Movie Name AKA Other Movie Name 1983 1080p BluRay REMUX AVC FLAC 2.0-BLURANiUM")]
+	[InlineData("Movie.Title.1987.1080p.BluRay.REMUX.DD+2.0.AVC")]
+	[InlineData("Movie.Title.1989.MULTi.DV.2160p.UHD.BluRay.x265-SESKAPiLE")]
+	[InlineData("Movie.2019.MULTi.COMPLETE.UHD.BLURAY-PRECELL")]
+	public void Parse_ShouldIdentifyMovie_WhenReleaseIsMovie(string input)
+	{
+		var parsed = _instance.Parse(input);
+		
+		Assert.Equal(ReleaseType.MOVIE, parsed.Type);
 	}
 
 	[Theory]
