@@ -14,6 +14,7 @@ public class QualityParserServiceTest
 
 	[Theory]
 	[InlineData("Series Name S03 1080p Blu-ray AVC DTS-HD MA 5.1-JUSTAPRE")]
+	[InlineData("The Series 2014 S08 1080p Blu-ray AVC DTS-HD MA 5.1-BTN")]
 	public void Parse_ShouldReturnQualitySourceBlurayDisc_WhenReleaseIsBlurayDisc(string input)
 		=> AssertQualitySource(input, QualitySource.BLURAY_DISK);
 	
