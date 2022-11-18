@@ -39,5 +39,8 @@ public enum StreamingProvider
 	DC_UNIVERSE,
 
 	[RegEx("(hbo)(?=[ ._-]web[ ._-]?(dl|rip)?)")]
-	HBO_NOW
+	HBO_NOW,
+	
+	[RegEx("(pmtp)(?=[ ._-]web[ ._-]?(dl|rip)?)")]
+	PARAMOUNT_PLUS,
 }

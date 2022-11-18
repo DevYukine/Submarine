@@ -117,6 +117,13 @@ public class StreamingProviderParserServiceTest
 	[InlineData("Show.Title.S04E04.Teambuilding.Exercise.720p.HBO.WEB-DL.DD5.1.H.264-monkee")]
 	public void Parse_ShouldReturnStreamingProviderHBONow_WhenReleaseIsHBONow(string input)
 		=> AssertStreamingProvider(input, StreamingProvider.HBO_NOW);
+	
+	[Theory]
+	[InlineData("Series.Title.S03E01.2160p.PMTP.WEB-DL.DDP5.1.HDR.HEVC-NTb")]
+	[InlineData("Movie.2022.Hybrid.2160p.PMTP.WEB-DL.DDPA5.1.DV.HEVC-ShiNobi")]
+	[InlineData("Series Title S02 1080p PMTP WEB-DL AAC 2.0 H.264-rEx")]
+	public void Parse_ShouldReturnStreamingProviderHBONow_WhenReleaseIsParamountPlus(string input)
+		=> AssertStreamingProvider(input, StreamingProvider.PARAMOUNT_PLUS);
 
 	[Theory]
 	[InlineData("Movie 2021 1080p WEB-DL DD5 1 H 264-EVO")]
