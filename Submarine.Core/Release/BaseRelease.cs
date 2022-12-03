@@ -12,6 +12,8 @@ public record BaseRelease
 	public string FullTitle { get; init; }
 
 	public string Title { get; init; }
+	
+	public int? Year { get; init; }
 
 	public IReadOnlyList<string> Aliases { get; init; }
 

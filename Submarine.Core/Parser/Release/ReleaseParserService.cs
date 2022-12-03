@@ -583,6 +583,7 @@ public class ReleaseParserService : IParser<BaseRelease>
 		{
 			FullTitle = input,
 			Title = main,
+			Year = year != null ? int.Parse(year) : null,
 			Aliases = aliases,
 			Languages = languages,
 			StreamingProvider = streamingProvider,
