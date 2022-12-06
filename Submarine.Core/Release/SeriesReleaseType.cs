@@ -34,6 +34,4 @@ public enum SeriesReleaseType
 	/// Release is containing multiple seasons of this Series
 	/// </summary>
 	MULTI_SEASON
-	
-	
 }
