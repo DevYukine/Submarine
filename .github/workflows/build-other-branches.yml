@@ -7,7 +7,7 @@ on:
     paths:
       - Submarine.Api/**
       - Submarine.Core/**
-      - .github/workflows/build.yml
+      - .github/workflows/build-other-branches.yml
 
 jobs:
   docker:
