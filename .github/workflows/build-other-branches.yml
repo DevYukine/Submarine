@@ -17,6 +17,9 @@ jobs:
       - name: Checkout Source code
         uses: actions/checkout@v2
 
+      - name: Get Branch Name
+        run: echo "BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
@@ -44,7 +47,7 @@ jobs:
           push: true
           tags: |
             ghcr.io/simplymedia/submarine-api:${{ steps.sha_short.outputs.sha_short }}
-            ghcr.io/simplymedia/submarine-api:${GITHUB_REF##*/}
+            ghcr.io/simplymedia/submarine-api:${{ env.BRANCH }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
