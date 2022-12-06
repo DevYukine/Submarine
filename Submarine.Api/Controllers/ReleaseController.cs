@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Submarine.Core.Parser;
 using Submarine.Core.Provider;
 using Submarine.Core.Release;
+using Submarine.Core.Release.Exceptions;
 using Submarine.Core.Release.Torrent;
 using Submarine.Core.Release.Usenet;
 
@@ -27,14 +28,21 @@ public class ReleaseController : ControllerBase
 	[HttpGet]
 	public Task<IActionResult> GetAsync([FromQuery, Required] string title, [FromQuery, Required] Protocol protocol)
 	{
-		BaseRelease parsed = protocol switch
+		try
 		{
-			Protocol.BITTORRENT => _torrentReleaseParserService.Parse(title),
-			Protocol.USENET => _usenetReleaseParserService.Parse(title),
-			Protocol.XDCC => throw new NotImplementedException(),
-			_ => throw new ArgumentOutOfRangeException(nameof(protocol), protocol, null)
-		};
+			BaseRelease parsed = protocol switch
+			{
+				Protocol.BITTORRENT => _torrentReleaseParserService.Parse(title),
+				Protocol.USENET => _usenetReleaseParserService.Parse(title),
+				Protocol.XDCC => throw new NotImplementedException(),
+				_ => throw new ArgumentOutOfRangeException(nameof(protocol), protocol, null)
+			};
 
-		return Task.FromResult(Ok(parsed) as IActionResult);
+			return Task.FromResult(Ok(parsed) as IActionResult);
+		}
+		catch (NotParsableReleaseException)
+		{
+			return Task.FromResult(UnprocessableEntity() as IActionResult);
+		}
 	}
 }
