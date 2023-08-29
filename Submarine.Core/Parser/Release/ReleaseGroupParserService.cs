@@ -56,7 +56,7 @@ public class ReleaseGroupParserService : IParser<string?>
 
 		var group = matches.Last().Groups["releasegroup"].Value;
 
-		if (int.TryParse(group, out var i))
+		if (int.TryParse(group, out _))
 		{
 			_logger.LogDebug(
 				"{Input} matched release group \"{Group}\" with ReleaseGroupRegex but group parses to an integer, so we assume its invalid",
