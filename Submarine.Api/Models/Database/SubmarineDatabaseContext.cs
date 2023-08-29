@@ -39,7 +39,7 @@ public class SubmarineDatabaseContext : DbContext
 
 		foreach (var entry in changedEntries)
 		{
-			if (entry.State == EntityState.Added && entry.Entity is ICreatable creatable)
+			if (entry is { State: EntityState.Added, Entity: ICreatable creatable })
 				creatable.CreatedAt = now;
 
 			if (entry.Entity is IUpdatable updatable)
