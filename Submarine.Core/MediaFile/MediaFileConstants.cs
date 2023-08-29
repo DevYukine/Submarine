@@ -3,8 +3,14 @@ using System.Collections.Immutable;
 
 namespace Submarine.Core.MediaFile;
 
-public static class MediaFile
+/// <summary>
+/// Constants related to MediaFiles
+/// </summary>
+public static class MediaFileConstants
 {
+	/// <summary>
+	/// Extensions of media files
+	/// </summary>
 	public static readonly IImmutableSet<string> MediaFileExtensions = new HashSet<string>()
 	{
 		".webm",

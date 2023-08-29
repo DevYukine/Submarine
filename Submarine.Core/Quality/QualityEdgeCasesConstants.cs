@@ -3,7 +3,10 @@ using System.Collections.Generic;
 
 namespace Submarine.Core.Quality;
 
-public static class QualityEdgeCases
+/// <summary>
+/// Constants related to QualityEdgeCases
+/// </summary>
+public static class QualityEdgeCasesConstants
 {
 	/// <summary>
 	///     These are default Qualities of groups which do not add there Quality in the Release Group, these will only be used

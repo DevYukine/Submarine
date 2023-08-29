@@ -536,7 +536,7 @@ public class ReleaseParserService : IParser<BaseRelease>
 			_logger.LogDebug("Skipping Parsing of Streaming Provider for {Input} since Quality is not WebDL or WebRip",
 				input);
 
-		if (quality.Resolution.Source is QualitySource.UNKNOWN && releaseGroup != null && QualityEdgeCases.EdgeCaseReleaseGroupQualitySourceMapping.TryGetValue(releaseGroup, out var qualitySource))
+		if (quality.Resolution.Source is QualitySource.UNKNOWN && releaseGroup != null && QualityEdgeCasesConstants.EdgeCaseReleaseGroupQualitySourceMapping.TryGetValue(releaseGroup, out var qualitySource))
 		{
 			_logger.LogDebug("{Input} quality source is UNKNOWN but release group has edge case source mapping, applying default source instead", input);
 			quality.Resolution.Source = qualitySource;
