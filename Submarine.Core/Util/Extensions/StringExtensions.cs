@@ -61,6 +61,12 @@ public static class StringExtensions
 		throw new FormatException($"{str} isn't a number");
 	}
 
+	/// <summary>
+	/// Converts a string to a decimal including written out numbers
+	/// </summary>
+	/// <param name="str">Input String</param>
+	/// <returns>parsed decimal</returns>
+	/// <exception cref="FormatException">If the string can't be parsed to an decimal</exception>
 	public static decimal ToDecimal(this string str)
 	{
 		var normalized = str.Normalize(NormalizationForm.FormKC);

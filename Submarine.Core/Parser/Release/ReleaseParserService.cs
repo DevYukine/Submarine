@@ -13,6 +13,9 @@ using Submarine.Core.Util.RegEx;
 
 namespace Submarine.Core.Parser.Release;
 
+/// <summary>
+/// Service which parses a release
+/// </summary>
 public class ReleaseParserService : IParser<BaseRelease>
 {
 	private static readonly Regex EditionRegex = new(@"\(?\b(?<edition>(((Recut.|Extended.|Ultimate.)?(Director.?s|Collector.?s|Theatrical|Ultimate|Extended|Despecialized|(Special|Rouge|Final|Assembly|Imperial|Diamond|Signature|Hunter|Rekall)(?=(.(Cut|Edition|Version)))|\d{2,3}(th)?.Anniversary)(?:.(Cut|Edition|Version))?(.(Extended|Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit))?|((Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit|Restored|((2|3|4)in1))))))\b\)?", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -495,6 +498,12 @@ public class ReleaseParserService : IParser<BaseRelease>
 		_releaseGroupParser = releaseGroupParser;
 	}
 
+	/// <summary>
+	/// Parse a BaseRelease from a Release Title.
+	/// </summary>
+	/// <param name="input">The Release Title</param>
+	/// <returns>A <see cref="BaseRelease"/></returns>
+	/// <exception cref="ArgumentOutOfRangeException">If an Enum is out of range</exception>
 	public BaseRelease Parse(string input)
 	{
 		_logger.LogDebug("Starting Basic Parse of {Input}", input);

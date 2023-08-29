@@ -5,6 +5,9 @@ using Submarine.Core.Quality;
 
 namespace Submarine.Core.Parser;
 
+/// <summary>
+///		Service which parses the Quality of a Release
+/// </summary>
 public class QualityParserService : IParser<QualityModel>
 {
 	private static readonly Regex SourceRegex = new(@"\b(?:
@@ -73,7 +76,7 @@ public class QualityParserService : IParser<QualityModel>
 
 	private static readonly Regex RemuxRegex = new(@"\b(?<remux>(BD)?[-_. ]?Remux)\b",
 		RegexOptions.Compiled | RegexOptions.IgnoreCase);
-	
+
 	private static readonly Regex FullBlurayDiscRegex = new(@"\b(COMPLETE|ISO|BDISO|BD25|BD50|BR.?DISK)\b",
 		RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -82,10 +85,19 @@ public class QualityParserService : IParser<QualityModel>
 
 	private readonly ILogger<QualityParserService> _logger;
 
+	/// <summary>
+	/// Creates a new <see cref="QualityParserService"/>
+	/// </summary>
+	/// <param name="logger">The Logger of this <see cref="QualityParserService"/></param>
 	public QualityParserService(ILogger<QualityParserService> logger)
 		=> _logger = logger;
 
 
+	/// <summary>
+	/// Parses the Quality of a Release
+	/// </summary>
+	/// <param name="input">The Release name</param>
+	/// <returns>The QualityModel of that Release</returns>
 	public QualityModel Parse(string input)
 	{
 		_logger.LogDebug("Trying to parse quality for {Input}", input);
@@ -150,7 +162,7 @@ public class QualityParserService : IParser<QualityModel>
 					return new QualityResolutionModel(QualitySource.BLURAY_REMUX,
 						resolution ?? QualityResolution.R1080_P);
 				}
-				
+
 				// Handle Edge cases where there is no indicator if its a full disc or not besides the codecs
 				if (FullBlurayCodecsRegex.IsMatch(normalizedName))
 				{
