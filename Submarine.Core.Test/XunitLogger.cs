@@ -25,6 +25,6 @@ public class XunitLogger<T> : ILogger<T>, IDisposable
 	public bool IsEnabled(LogLevel logLevel)
 		=> true;
 
-	public IDisposable BeginScope<TState>(TState state)
+	public IDisposable BeginScope<TState>(TState state) where TState : notnull
 		=> this;
 }
