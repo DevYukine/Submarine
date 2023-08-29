@@ -30,7 +30,7 @@ public enum QualitySource
 	DVD,
 
 	/// <summary>
-	/// The source is a raw & (mostly) uncompressed HD recording
+	/// The source is a raw and (mostly) uncompressed HD recording
 	/// </summary>
 	RAW_HD,
 
