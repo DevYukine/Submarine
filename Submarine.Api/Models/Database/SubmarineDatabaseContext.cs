@@ -49,8 +49,8 @@ public class SubmarineDatabaseContext : DbContext
 		var changedEntries = ChangeTracker.Entries()
 			.Where(e => e.State is EntityState.Added or EntityState.Modified)
 			.ToList();
-		
-		var now = DateTimeOffset.Now;
+
+		var now = DateTimeOffset.UtcNow;
 
 		foreach (var entry in changedEntries)
 		{
