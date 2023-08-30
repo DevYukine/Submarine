@@ -46,7 +46,7 @@ public enum StreamingProvider
 	/// <summary>
 	/// Crunchyroll <see href="https://en.wikipedia.org/wiki/Crunchyroll"/>
 	/// </summary>
-	[RegEx("(cr|crunchyroll|cr-dub)(?=[ ._\\-\\)](web[ ._-]?(dl|rip)?)?)")]
+	[RegEx(@"(cr|crunchyroll|cr-dub)(?=[ ._\-\)](web[ ._-]?(dl|rip)?)?)")]
 	CRUNCHYROLL,
 
 	/// <summary>
