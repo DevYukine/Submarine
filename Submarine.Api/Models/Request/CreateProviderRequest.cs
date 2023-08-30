@@ -16,6 +16,8 @@ public record CreateProviderRequest
 
 	public short Priority { get; set; }
 
+	public List<string> Tags { get; set; }
+
 	public Provider ToProvider()
 		=> Protocol switch
 		{
@@ -25,7 +27,8 @@ public record CreateProviderRequest
 				Mode = Mode,
 				Url = Url,
 				ApiKey = ApiKey,
-				Priority = Priority
+				Priority = Priority,
+				Tags = Tags
 			},
 			Protocol.USENET => new UsenetIndexer
 			{
@@ -33,7 +36,8 @@ public record CreateProviderRequest
 				Mode = Mode,
 				Url = Url,
 				ApiKey = ApiKey,
-				Priority = Priority
+				Priority = Priority,
+				Tags = Tags
 			},
 			Protocol.XDCC => throw new NotImplementedException(),
 			_ => throw new ArgumentOutOfRangeException()
