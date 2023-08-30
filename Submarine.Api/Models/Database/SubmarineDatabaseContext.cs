@@ -29,7 +29,22 @@ public class SubmarineDatabaseContext : DbContext
 		=> Configuration = configuration;
 
 	/// <inheritdoc />
+	public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
+	{
+		UpdateTimestamps();
+
+		return base.SaveChangesAsync(cancellationToken);
+	}
+
+	/// <inheritdoc />
 	public override int SaveChanges()
+	{
+		UpdateTimestamps();
+
+		return base.SaveChanges();
+	}
+
+	private void UpdateTimestamps()
 	{
 		var changedEntries = ChangeTracker.Entries()
 			.Where(e => e.State is EntityState.Added or EntityState.Modified)
@@ -45,7 +60,5 @@ public class SubmarineDatabaseContext : DbContext
 			if (entry.Entity is IUpdatable updatable)
 				updatable.UpdatedAt = now;
 		}
-		
-		return base.SaveChanges();
 	}
 }
