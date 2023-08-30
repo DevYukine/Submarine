@@ -11,7 +11,7 @@ public static class MediaFileConstants
 	/// <summary>
 	/// Extensions of media files
 	/// </summary>
-	public static readonly IImmutableSet<string> MediaFileExtensions = new HashSet<string>()
+	public static readonly IImmutableSet<string> MediaFileExtensions = new HashSet<string>
 	{
 		".webm",
 		".m4v",
