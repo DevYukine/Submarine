@@ -141,12 +141,9 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints =>
-{
-	endpoints.MapControllers();
-	endpoints.MapHealthChecks("/_status/healthz");
-	endpoints.MapHealthChecks("/_status/ready");
-});
+app.MapControllers();
+app.MapHealthChecks("/_status/healthz");
+app.MapHealthChecks("/_status/ready");
 
 app.MapControllers();
 
