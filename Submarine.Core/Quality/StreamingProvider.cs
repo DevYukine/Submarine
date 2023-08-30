@@ -84,4 +84,34 @@ public enum StreamingProvider
 	/// </summary>
 	[RegEx("(pmtp)(?=[ ._-]web[ ._-]?(dl|rip)?)")]
 	PARAMOUNT_PLUS,
+
+	/// <summary>
+	/// Comedy Central <see href="https://en.wikipedia.org/wiki/Comedy_Central"/>
+	/// </summary>
+	[RegEx(@"\b(CC)\b[ ._-]web[ ._-]?(dl|rip)?\b")]
+	COMEDY_CENTRAL,
+
+	/// <summary>
+	/// Crave <see href="https://en.wikipedia.org/wiki/Crave_(streaming_service)"/>
+	/// </summary>
+	[RegEx(@"\b(crav(e)?)\b[ ._-]web[ ._-]?(dl|rip)?\b")]
+	CRAVE,
+
+	/// <summary>
+	/// HiDive <see href="https://en.wikipedia.org/wiki/Sentai_Filmworks#Hidive"/>
+	/// </summary>
+	[RegEx(@"\b(HIDI(VE)?)\b")]
+	HIDIVE,
+
+	/// <summary>
+	/// Itunes <see href="https://en.wikipedia.org/wiki/ITunes"/>
+	/// </summary>
+	[RegEx(@"\b(it|itunes)\b(?=[ ._-]web[ ._-]?(dl|rip)\b)")]
+	ITUNES,
+
+	/// <summary>
+	/// Movies Anywhere <see href="https://en.wikipedia.org/wiki/Movies_Anywhere"/>
+	/// </summary>
+	[RegEx(@"(?<!dts[ .-]?hd[ .-]?)ma\b(?=.*\bweb[ ._-]?(dl|rip)\b)")]
+	MOVIES_ANYWHERE
 }

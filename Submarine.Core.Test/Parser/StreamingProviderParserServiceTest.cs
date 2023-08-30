@@ -126,6 +126,38 @@ public class StreamingProviderParserServiceTest
 		=> AssertStreamingProvider(input, StreamingProvider.PARAMOUNT_PLUS);
 
 	[Theory]
+	[InlineData("Series.Title.S01E01.Hood.Pass.1080p.CC.WEB-DL.AAC2.0.x264-RTN")]
+	[InlineData("The.Series.Title.2017.1080p.CC.WEB-DL.AAC2.0.x264-monkee")]
+	public void Parse_ShouldReturnStreamingProviderComedyCentral_WhenReleaseIsComedyCentral(string input)
+		=> AssertStreamingProvider(input, StreamingProvider.COMEDY_CENTRAL);
+
+	[Theory]
+	[InlineData("Series.Title.S01E01.1080p.CRAVE.WEB-DL.AAC2.0.H.264-NTb")]
+	public void Parse_ShouldReturnStreamingProviderCrave_WhenReleaseIsCrave(string input)
+		=> AssertStreamingProvider(input, StreamingProvider.CRAVE);
+
+	[Theory]
+	[InlineData("[SubsPlus+] Anime - S01E03 (WEB 1080p HIDIVE) [A54A2DC9]")]
+	[InlineData("Anime Title - 02 - 1080p WEB x264 -NanDesuKa (HIDIVE)")]
+	[InlineData("The.Anime.Movie.Title-Longer.Name.720p.HIDIVE.Dual.Audio.WEB-DL.-KS")]
+	[InlineData("The Anime Title Part 1 S01 1080p HIDIVE WEB-DL AAC 2.0 H.264-KS-")]
+	[InlineData("Series.S01E01.Episode.Name.1080p.HIDI.WEB-DL.AAC2.0.H.264-NTb.mkv")]
+	public void Parse_ShouldReturnStreamingProviderHiDIVE_WhenReleaseIsHiDIVE(string input)
+		=> AssertStreamingProvider(input, StreamingProvider.HIDIVE);
+
+	[Theory]
+	[InlineData("Series.S02.1080p.iT.WEB-DL.DD5.1.H.264-Cinefeel")]
+	[InlineData("Movie Title 2021 1080p IT WEB-DL DD5 1 H 264-EVO")]
+	[InlineData("The.Movie.2023.Hybrid.2160p.iT.WEB-DL.DDPA5.1.HDR10P.DV.HEVC-HighFatMilk")]
+	public void Parse_ShouldReturnStreamingProviderItunes_WhenReleaseIsItunes(string input)
+		=> AssertStreamingProvider(input, StreamingProvider.ITUNES);
+
+	[Theory]
+	[InlineData("The.Movie.Title..2023.2160p.MA.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.mkv")]
+	public void Parse_ShouldReturnStreamingProviderMoviesAnywhere_WhenReleaseIsMoviesAnywhere(string input)
+		=> AssertStreamingProvider(input, StreamingProvider.MOVIES_ANYWHERE);
+
+	[Theory]
 	[InlineData("Movie 2021 1080p WEB-DL DD5 1 H 264-EVO")]
 	[InlineData("Movie 2021 1080p WEB-DL DD5 1 H 264-CMRG")]
 	[InlineData("The Series Title S05E09 1080p WEBRip x264-CAKES")]
