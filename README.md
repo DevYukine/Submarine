@@ -44,7 +44,7 @@ TBA
 ## Built With
 
 * [C#](https://docs.microsoft.com/en-us/dotnet/csharp/) - Programming Language 
-* [.NET 5](https://docs.microsoft.com/en-us/dotnet/) - Runtime
+* [.NET 7](https://docs.microsoft.com/en-us/dotnet/) - Runtime
 * [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/) - Web Framework
 * [EntityFramework Core](https://docs.microsoft.com/en-us/ef/core/) - Database ORM
 * [xUnit](https://github.com/xunit/xunit) - Unit Tests
@@ -55,13 +55,13 @@ TBA
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/DevYukine/Submarine/tags). 
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/SimplyMedia/Submarine/tags). 
 
 ## Authors
 
 * **DevYukine** - *Initial work* - [DevYukine](https://github.com/DevYukine)
 
-See also the list of [contributors](https://github.com/DevYukine/Submarine/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/SimplyMedia/Submarine/contributors) who participated in this project.
 
 ## License
 
