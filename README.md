@@ -22,7 +22,9 @@ Submarine is also based on [Sonarr](https://github.com/Sonarr/Sonarr/) & [Radarr
 - [ ] Swapping out the metadata provider for different epsiode/season numbering
 - [ ] A nicer UI which is responsive even when Submarine does heavy work in the background
 - [ ] No long running HTTP requests to the frontend which could timeout due to Reverse Proxy settings
-- [x] Fully Documented API with OpenAPI implementation
+- [x] Fully Documented API with OpenAPI
+- [] Open Source and self hosting supported TheXem alternative
+- [] New, documented and up to date Protocols for communication between Submarine and other Software
 
 
 ## Getting Started
