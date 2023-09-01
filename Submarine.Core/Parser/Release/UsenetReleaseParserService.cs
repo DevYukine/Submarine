@@ -10,7 +10,7 @@ using Submarine.Core.Validator;
 namespace Submarine.Core.Parser.Release;
 
 /// <summary>
-/// Service to parse a release with Usenet standards
+///     Service to parse a release with Usenet standards
 /// </summary>
 public class UsenetReleaseParserService : IParser<UsenetRelease>
 {
@@ -30,11 +30,11 @@ public class UsenetReleaseParserService : IParser<UsenetRelease>
 	private readonly UsenetReleaseValidatorService _usenetReleaseValidatorService;
 
 	/// <summary>
-	/// Creates a new <see cref="UsenetReleaseParserService"/>
+	///     Creates a new <see cref="UsenetReleaseParserService" />
 	/// </summary>
-	/// <param name="logger">The <see cref="ILogger{TCategoryName}"/></param>
-	/// <param name="usenetReleaseValidatorService">The <see cref="UsenetReleaseValidatorService"/></param>
-	/// <param name="releaseParserService">The <see cref="ReleaseParserService"/></param>
+	/// <param name="logger">The <see cref="ILogger{TCategoryName}" /></param>
+	/// <param name="usenetReleaseValidatorService">The <see cref="UsenetReleaseValidatorService" /></param>
+	/// <param name="releaseParserService">The <see cref="ReleaseParserService" /></param>
 	public UsenetReleaseParserService(
 		ILogger<UsenetReleaseParserService> logger,
 		UsenetReleaseValidatorService usenetReleaseValidatorService,
@@ -46,10 +46,10 @@ public class UsenetReleaseParserService : IParser<UsenetRelease>
 	}
 
 	/// <summary>
-	/// Parses a release with Usenet standards
+	///     Parses a release with Usenet standards
 	/// </summary>
 	/// <param name="input">Release Title</param>
-	/// <returns>a <see cref="UsenetRelease"/></returns>
+	/// <returns>a <see cref="UsenetRelease" /></returns>
 	public UsenetRelease Parse(string input)
 	{
 		_logger.LogDebug("Starting parse of {Input} with Usenet standards", input);

@@ -17,7 +17,7 @@ public class QualityParserServiceTest
 	[InlineData("The Series 2014 S08 1080p Blu-ray AVC DTS-HD MA 5.1-BTN")]
 	public void Parse_ShouldReturnQualitySourceBlurayDisc_WhenReleaseIsBlurayDisc(string input)
 		=> AssertQualitySource(input, QualitySource.BLURAY_DISK);
-	
+
 	[Theory]
 	[InlineData("Movie Name 1978 1080p BluRay REMUX AVC FLAC 1.0-BLURANiUM")]
 	[InlineData("Series!!! on ICE - S01E12[JP BD Remux][ENG subs]")]

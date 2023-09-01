@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Submarine.Core.Quality;
 
 /// <summary>
-/// Constants related to QualityEdgeCases
+///     Constants related to QualityEdgeCases
 /// </summary>
 public static class QualityEdgeCasesConstants
 {

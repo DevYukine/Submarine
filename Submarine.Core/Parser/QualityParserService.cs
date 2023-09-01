@@ -6,7 +6,7 @@ using Submarine.Core.Quality;
 namespace Submarine.Core.Parser;
 
 /// <summary>
-///		Service which parses the Quality of a Release
+///     Service which parses the Quality of a Release
 /// </summary>
 public class QualityParserService : IParser<QualityModel>
 {
@@ -86,15 +86,15 @@ public class QualityParserService : IParser<QualityModel>
 	private readonly ILogger<QualityParserService> _logger;
 
 	/// <summary>
-	/// Creates a new <see cref="QualityParserService"/>
+	///     Creates a new <see cref="QualityParserService" />
 	/// </summary>
-	/// <param name="logger">The Logger of this <see cref="QualityParserService"/></param>
+	/// <param name="logger">The Logger of this <see cref="QualityParserService" /></param>
 	public QualityParserService(ILogger<QualityParserService> logger)
 		=> _logger = logger;
 
 
 	/// <summary>
-	/// Parses the Quality of a Release
+	///     Parses the Quality of a Release
 	/// </summary>
 	/// <param name="input">The Release name</param>
 	/// <returns>The QualityModel of that Release</returns>
@@ -166,7 +166,8 @@ public class QualityParserService : IParser<QualityModel>
 				// Handle Edge cases where there is no indicator if its a full disc or not besides the codecs
 				if (FullBlurayCodecsRegex.IsMatch(normalizedName))
 				{
-					_logger.LogDebug("{Input} found no remux in name but AVC/HEVC as codec, setting source to bluray disc instead",
+					_logger.LogDebug(
+						"{Input} found no remux in name but AVC/HEVC as codec, setting source to bluray disc instead",
 						normalizedName);
 
 					return new QualityResolutionModel(QualitySource.BLURAY_DISK, resolution);

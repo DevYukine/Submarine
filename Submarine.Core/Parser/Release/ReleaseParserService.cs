@@ -14,11 +14,13 @@ using Submarine.Core.Util.RegEx;
 namespace Submarine.Core.Parser.Release;
 
 /// <summary>
-/// Service which parses a release
+///     Service which parses a release
 /// </summary>
 public class ReleaseParserService : IParser<BaseRelease>
 {
-	private static readonly Regex EditionRegex = new(@"\(?\b(?<edition>(((Recut.|Extended.|Ultimate.)?(Director.?s|Collector.?s|Theatrical|Ultimate|Extended|Despecialized|(Special|Rouge|Final|Assembly|Imperial|Diamond|Signature|Hunter|Rekall)(?=(.(Cut|Edition|Version)))|\d{2,3}(th)?.Anniversary)(?:.(Cut|Edition|Version))?(.(Extended|Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit))?|((Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit|Restored|((2|3|4)in1))))))\b\)?", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+	private static readonly Regex EditionRegex = new(
+		@"\(?\b(?<edition>(((Recut.|Extended.|Ultimate.)?(Director.?s|Collector.?s|Theatrical|Ultimate|Extended|Despecialized|(Special|Rouge|Final|Assembly|Imperial|Diamond|Signature|Hunter|Rekall)(?=(.(Cut|Edition|Version)))|\d{2,3}(th)?.Anniversary)(?:.(Cut|Edition|Version))?(.(Extended|Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit))?|((Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit|Restored|((2|3|4)in1))))))\b\)?",
+		RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
 	private static readonly RegexReplace WebsitePrefixRegex = new(
 		@"^\[\s*[-a-z]+(\.[a-z]+)+\s*\][- ]*|^www\.[a-z]+\.(?:com|net|org)[ -]*",
@@ -148,8 +150,10 @@ public class ReleaseParserService : IParser<BaseRelease>
 			RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
 		//Anime - Title (Optional Alias) Season/Episode Year
-		new(@"^(?<title>.+?)[-_. ](?<alias>\(.+?\))?[-_. ]?(S?(?<season>(?<!\d+)(?:\d{1,2}|\d{4})(?!\d+))(?:(?:[-_ ]?[ex])(?<episode>\d{2,3}(?!\d+)))?)[-_. ](?<titleyear>\d{4})[-_. ]", RegexOptions.IgnoreCase | RegexOptions.Compiled),
-		
+		new(
+			@"^(?<title>.+?)[-_. ](?<alias>\(.+?\))?[-_. ]?(S?(?<season>(?<!\d+)(?:\d{1,2}|\d{4})(?!\d+))(?:(?:[-_ ]?[ex])(?<episode>\d{2,3}(?!\d+)))?)[-_. ](?<titleyear>\d{4})[-_. ]",
+			RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
 		//Anime - Title Season EpisodeNumber + Absolute Episode Number [SubGroup]
 		new(
 			@"^(?<title>.+?)(?:[-_\W](?<![()\[!]))+(?:S?(?<season>(?<!\d+)\d{1,2}(?!\d+))(?:(?:[ex]|\W[ex]|-){1,2}(?<episode>(?<!\d+)\d{2}(?!\d+)))+)[-_. (]+?(?:[-_. ]?(?<absoluteepisode>(?<!\d+)\d{3}(\.\d{1,2})?(?!\d+|[pi])))+.+?\[(?<subgroup>.+?)\](?:$|\.mkv)",
@@ -218,7 +222,7 @@ public class ReleaseParserService : IParser<BaseRelease>
 		new(
 			@"^(?<title>.+?)(?:\W+S(?<season>(?<!\d+)(?:\d{1,2})(?!\d+))\W+(?:(?:Part\W?|(?<!\d+\W+)e)(?<seasonpart>\d{1,2}(?!\d+)))+)",
 			RegexOptions.IgnoreCase | RegexOptions.Compiled),
-		
+
 		//Anime - Title 4-digit Absolute Episode Number [SubGroup]
 		new(@"^(?<title>.+?)[-_. ]+(?<absoluteepisode>(?<!\d+)\d{4}(?!\d+))[-_. ]\[(?<subgroup>.+?)\]",
 			RegexOptions.IgnoreCase | RegexOptions.Compiled),
@@ -417,44 +421,63 @@ public class ReleaseParserService : IParser<BaseRelease>
 			@"^(?:\[(?<subgroup>.+?)\][-_. ])?(?<title>.+?)[-_. ]+?[\[(](?:S|Season|Saison|Series)[-_. ]?(?<season>\d{1,2}(?![-_. ]?\d+))(?:[-_. )\]]|$)+(?<extras>EXTRAS|SUBPACK)?(?!\\)",
 			RegexOptions.IgnoreCase | RegexOptions.Compiled)
 	};
-	
-	private static readonly Regex[] ReportMovieTitleRegex = {
-            //Anime [Subgroup] and Year
-            new(@"^(?:\[(?<subgroup>.+?)\][-_. ]?)(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|x|\d+|\]|\W\d+)))+.*?(?<hash>\[\w{8}\])?(?:$|\.)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-            //Anime [Subgroup] no year, versioned title, hash
-            new(@"^(?:\[(?<subgroup>.+?)\][-_. ]?)(?<title>(?![(\[]).+?)((v)(?:\d{1,2})(?:([-_. ])))(\[.*)?(?:[\[(][^])])?.*?(?<hash>\[\w{8}\])(?:$|\.)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+	private static readonly Regex[] ReportMovieTitleRegex =
+	{
+		//Anime [Subgroup] and Year
+		new(
+			@"^(?:\[(?<subgroup>.+?)\][-_. ]?)(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|x|\d+|\]|\W\d+)))+.*?(?<hash>\[\w{8}\])?(?:$|\.)",
+			RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-            //Anime [Subgroup] no year, info in double sets of brackets, hash
-            new(@"^(?:\[(?<subgroup>.+?)\][-_. ]?)(?<title>(?![(\[]).+?)(\[.*).*?(?<hash>\[\w{8}\])(?:$|\.)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+		//Anime [Subgroup] no year, versioned title, hash
+		new(
+			@"^(?:\[(?<subgroup>.+?)\][-_. ]?)(?<title>(?![(\[]).+?)((v)(?:\d{1,2})(?:([-_. ])))(\[.*)?(?:[\[(][^])])?.*?(?<hash>\[\w{8}\])(?:$|\.)",
+			RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-            //Anime [Subgroup] no year, info in parentheses or brackets, hash
-            new(@"^(?:\[(?<subgroup>.+?)\][-_. ]?)(?<title>(?![(\[]).+)(?:[\[(][^])]).*?(?<hash>\[\w{8}\])(?:$|\.)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+		//Anime [Subgroup] no year, info in double sets of brackets, hash
+		new(@"^(?:\[(?<subgroup>.+?)\][-_. ]?)(?<title>(?![(\[]).+?)(\[.*).*?(?<hash>\[\w{8}\])(?:$|\.)",
+			RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-            //Some german or french tracker formats (missing year, ...) (Only applies to german and TrueFrench releases) - see ParserFixture for examples and tests - french removed as it broke all movies w/ french titles
-            new(@"^(?<title>(?![(\[]).+?)((\W|_))(" + EditionRegex + @".{1,3})?(?:(?<!(19|20)\d{2}.*?)(German|TrueFrench))(.+?)(?=((19|20)\d{2}|$))(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+))?(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+		//Anime [Subgroup] no year, info in parentheses or brackets, hash
+		new(@"^(?:\[(?<subgroup>.+?)\][-_. ]?)(?<title>(?![(\[]).+)(?:[\[(][^])]).*?(?<hash>\[\w{8}\])(?:$|\.)",
+			RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-            //Special, Despecialized, etc. Edition Movies, e.g: Mission.Impossible.3.Special.Edition.2011
-            new(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*" + EditionRegex + @".{1,3}(?<year>(1(8|9)|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+		//Some german or french tracker formats (missing year, ...) (Only applies to german and TrueFrench releases) - see ParserFixture for examples and tests - french removed as it broke all movies w/ french titles
+		new(
+			@"^(?<title>(?![(\[]).+?)((\W|_))(" + EditionRegex +
+			@".{1,3})?(?:(?<!(19|20)\d{2}.*?)(German|TrueFrench))(.+?)(?=((19|20)\d{2}|$))(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+))?(\W+|_|$)(?!\\)",
+			RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-            //Normal movie format, e.g: Mission.Impossible.3.2011
-            new(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|(1(8|9)|20)\d{2}|\]|\W(1(8|9)|20)\d{2})))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+		//Special, Despecialized, etc. Edition Movies, e.g: Mission.Impossible.3.Special.Edition.2011
+		new(
+			@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*" + EditionRegex +
+			@".{1,3}(?<year>(1(8|9)|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)",
+			RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-            //PassThePopcorn Torrent names: Star.Wars[PassThePopcorn]
-            new(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<year>(\[\w *\])))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+		//Normal movie format, e.g: Mission.Impossible.3.2011
+		new(
+			@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|(1(8|9)|20)\d{2}|\]|\W(1(8|9)|20)\d{2})))+(\W+|_|$)(?!\\)",
+			RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-            //That did not work? Maybe some tool uses [] for years. Who would do that?
-            new(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|\d+|\W\d+)))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+		//PassThePopcorn Torrent names: Star.Wars[PassThePopcorn]
+		new(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<year>(\[\w *\])))+(\W+|_|$)(?!\\)",
+			RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-            //As a last resort for movies that have ( or [ in their title.
-            new(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled)
-        };
+		//That did not work? Maybe some tool uses [] for years. Who would do that?
+		new(
+			@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|\d+|\W\d+)))+(\W+|_|$)(?!\\)",
+			RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-        private static readonly Regex[] ReportMovieTitleFolderRegex = {
-            //When year comes first.
-            new(@"^(?:(?:[-_\W](?<![)!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\W\d+)))+(\W+|_|$)(?<title>.+?)?$")
-        };
+		//As a last resort for movies that have ( or [ in their title.
+		new(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)",
+			RegexOptions.IgnoreCase | RegexOptions.Compiled)
+	};
+
+	private static readonly Regex[] ReportMovieTitleFolderRegex =
+	{
+		//When year comes first.
+		new(@"^(?:(?:[-_\W](?<![)!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\W\d+)))+(\W+|_|$)(?<title>.+?)?$")
+	};
 
 	//Regex to split titles that contain `AKA`.
 	private static readonly Regex AlternativeTitleRegex =
@@ -499,10 +522,10 @@ public class ReleaseParserService : IParser<BaseRelease>
 	}
 
 	/// <summary>
-	/// Parse a BaseRelease from a Release Title.
+	///     Parse a BaseRelease from a Release Title.
 	/// </summary>
 	/// <param name="input">The Release Title</param>
-	/// <returns>A <see cref="BaseRelease"/></returns>
+	/// <returns>A <see cref="BaseRelease" /></returns>
 	/// <exception cref="ArgumentOutOfRangeException">If an Enum is out of range</exception>
 	public BaseRelease Parse(string input)
 	{
@@ -536,9 +559,13 @@ public class ReleaseParserService : IParser<BaseRelease>
 			_logger.LogDebug("Skipping Parsing of Streaming Provider for {Input} since Quality is not WebDL or WebRip",
 				input);
 
-		if (quality.Resolution.Source is QualitySource.UNKNOWN && releaseGroup != null && QualityEdgeCasesConstants.EdgeCaseReleaseGroupQualitySourceMapping.TryGetValue(releaseGroup, out var qualitySource))
+		if (quality.Resolution.Source is QualitySource.UNKNOWN && releaseGroup != null &&
+		    QualityEdgeCasesConstants.EdgeCaseReleaseGroupQualitySourceMapping.TryGetValue(releaseGroup,
+			    out var qualitySource))
 		{
-			_logger.LogDebug("{Input} quality source is UNKNOWN but release group has edge case source mapping, applying default source instead", input);
+			_logger.LogDebug(
+				"{Input} quality source is UNKNOWN but release group has edge case source mapping, applying default source instead",
+				input);
 			quality.Resolution.Source = qualitySource;
 		}
 
@@ -555,17 +582,18 @@ public class ReleaseParserService : IParser<BaseRelease>
 				var (_, _, seasons, episodes, absoluteEpisodes, _, _, _) = seriesTitleMetadata;
 
 				type = ReleaseType.SERIES;
-			
+
 				var parsedSeasons = seasons != null ? (IReadOnlyList<int>)seasons : new List<int>();
 				var parsedEpisodes = episodes != null ? (IReadOnlyList<int>)episodes : new List<int>();
-				var parsedAbsoluteEpisodes = absoluteEpisodes != null ? (IReadOnlyList<int>)absoluteEpisodes : new List<int>();
+				var parsedAbsoluteEpisodes =
+					absoluteEpisodes != null ? (IReadOnlyList<int>)absoluteEpisodes : new List<int>();
 
 				var seriesReleaseType = parsedSeasons.Count switch
 				{
 					> 1 => SeriesReleaseType.MULTI_SEASON,
 					1 when parsedEpisodes.Count == 0 => SeriesReleaseType.FULL_SEASON,
 					1 when parsedEpisodes.Count > 1 => SeriesReleaseType.PARTIAL_SEASON,
-					0 or 1 when parsedEpisodes.Count == 1  => SeriesReleaseType.EPISODE,
+					0 or 1 when parsedEpisodes.Count == 1 => SeriesReleaseType.EPISODE,
 					0 when parsedAbsoluteEpisodes.Count > 1 => SeriesReleaseType.MULTI_EPISODES,
 					0 when parsedAbsoluteEpisodes.Count == 1 => SeriesReleaseType.EPISODE,
 					_ => throw new ArgumentOutOfRangeException()
@@ -583,7 +611,7 @@ public class ReleaseParserService : IParser<BaseRelease>
 			case MovieTitleMetadata movieTitleMetadata:
 			{
 				type = ReleaseType.MOVIE;
-				
+
 				break;
 			}
 		}
@@ -603,7 +631,7 @@ public class ReleaseParserService : IParser<BaseRelease>
 			SeriesReleaseData = seriesReleaseData,
 			MovieReleaseData = movieReleaseData
 		};
-		
+
 		return release;
 	}
 
@@ -624,7 +652,6 @@ public class ReleaseParserService : IParser<BaseRelease>
 		titles.RemoveAt(titles.Count - 1);
 
 		if (!ContainsSeriesInformationRegex.IsMatch(parsableTitle))
-		{
 			foreach (var regex in ReportMovieTitleRegex.Concat(ReportMovieTitleFolderRegex))
 			{
 				var match = regex.Matches(parsableTitle);
@@ -637,32 +664,26 @@ public class ReleaseParserService : IParser<BaseRelease>
 					var year = matched.Groups["titleyear"]?.Value;
 					string? group = null;
 					string? hash = null;
-				
+
 					var subGroup = matched.Groups["subgroup"];
 
-					if (subGroup.Success)
-					{
-						group = subGroup.Value;
-					}
-				
+					if (subGroup.Success) group = subGroup.Value;
+
 					var hashGroup = matched.Groups["hash"];
 
 					if (hashGroup.Success)
 					{
 						var hashValue = hashGroup.Value.Trim('[', ']');
 
-						if (!hashValue.Equals("1280x720"))
-						{
-							hash = hashValue;
-						}
+						if (!hashValue.Equals("1280x720")) hash = hashValue;
 					}
 
 					if (title.IsNotNullOrWhitespace())
-						return new MovieTitleMetadata(title, titles.Select(t => t.NormalizeReleaseTitle()).ToList(), year,
+						return new MovieTitleMetadata(title, titles.Select(t => t.NormalizeReleaseTitle()).ToList(),
+							year,
 							group, hash, null);
 				}
 			}
-		}
 
 		foreach (var regex in ReportSeriesTitleRegex)
 		{
@@ -686,11 +707,8 @@ public class ReleaseParserService : IParser<BaseRelease>
 				var episodeCaptures = matched.Groups["episode"].Captures.ToList();
 				var absoluteEpisodeCaptures = matched.Groups["absoluteepisode"].Captures.ToList();
 
-				if (seasonCaptures.Any())
-				{
-					seasons.AddRange(seasonCaptures.Select(s => s.Value.ToInteger()));
-				}
-				
+				if (seasonCaptures.Any()) seasons.AddRange(seasonCaptures.Select(s => s.Value.ToInteger()));
+
 				//Allows use to return a list of 0 episodes (We can handle that as a full season release)
 				if (episodeCaptures.Any())
 				{
@@ -698,23 +716,21 @@ public class ReleaseParserService : IParser<BaseRelease>
 					var last = episodeCaptures.Last().Value.ToInteger();
 
 					if (first > last)
-					{
-						throw new InvalidReleaseException("First episode is greater than last one (invalid release or multiple seasons maybe?)");
-					}
+						throw new InvalidReleaseException(
+							"First episode is greater than last one (invalid release or multiple seasons maybe?)");
 
 					var count = last - first + 1;
 					episodes.AddRange(Enumerable.Range(first, count));
 				}
-				
+
 				if (absoluteEpisodeCaptures.Any())
 				{
 					var first = absoluteEpisodeCaptures.First().Value.ToDecimal();
 					var last = absoluteEpisodeCaptures.Last().Value.ToDecimal();
 
 					if (first > last)
-					{
-						throw new InvalidReleaseException("First absolute episode is greater than last one (invalid release or multiple seasons maybe?)");
-					}
+						throw new InvalidReleaseException(
+							"First absolute episode is greater than last one (invalid release or multiple seasons maybe?)");
 
 					if (first % 1 != 0 || last % 1 != 0)
 					{
@@ -729,34 +745,26 @@ public class ReleaseParserService : IParser<BaseRelease>
 						var count = last - first + 1;
 						absoluteEpisodes.AddRange(Enumerable.Range((int)first, (int)count).ToArray());
 
-						if (matched.Groups["special"].Success)
-						{
-							special = true;
-						}
+						if (matched.Groups["special"].Success) special = true;
 					}
 				}
-				
+
 				var subGroup = matched.Groups["subgroup"];
 
-				if (subGroup.Success)
-				{
-					group = subGroup.Value;
-				}
-				
+				if (subGroup.Success) group = subGroup.Value;
+
 				var hashGroup = matched.Groups["hash"];
 
 				if (hashGroup.Success)
 				{
 					var hashValue = hashGroup.Value.Trim('[', ']');
 
-					if (!hashValue.Equals("1280x720"))
-					{
-						hash = hashValue;
-					}
+					if (!hashValue.Equals("1280x720")) hash = hashValue;
 				}
 
 				if (title.IsNotNullOrWhitespace())
-					return new SeriesTitleMetadata(title, titles.Select(t => t.NormalizeReleaseTitle()).ToList(), seasons, episodes, absoluteEpisodes, year, group, hash);	
+					return new SeriesTitleMetadata(title, titles.Select(t => t.NormalizeReleaseTitle()).ToList(),
+						seasons, episodes, absoluteEpisodes, year, group, hash);
 			}
 		}
 

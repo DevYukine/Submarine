@@ -37,11 +37,13 @@ public class ReleaseParserServiceTest
 		Assert.Equal(title, parsed.Title);
 		Assert.Equal(aliases, parsed.Aliases);
 	}
-	
+
 	[Theory]
 	[InlineData("Anime S01 2021 1080p WEB-DL AVC AAC 2.0 Dual Audio -ZR-", "Anime")]
-	[InlineData("The Anime Title (Japanese Alias) S01 2021 1080p WEB-DL AVC AAC 2.0 Dual Audio -ZR-", "The Anime Title")]
-	[InlineData("The Anime Title (Japanese Alias) S04E18 2022 1080p WEB-DL AVC AAC 2.0 Dual Audio -ZR-", "The Anime Title")]
+	[InlineData("The Anime Title (Japanese Alias) S01 2021 1080p WEB-DL AVC AAC 2.0 Dual Audio -ZR-",
+		"The Anime Title")]
+	[InlineData("The Anime Title (Japanese Alias) S04E18 2022 1080p WEB-DL AVC AAC 2.0 Dual Audio -ZR-",
+		"The Anime Title")]
 	public void Parse_ShouldParseTitle_WhenReleaseIsAnime(string input, string title)
 	{
 		var parsed = _instance.Parse(input);
@@ -57,10 +59,10 @@ public class ReleaseParserServiceTest
 	public void Parse_ShouldIdentifySeries_WhenReleaseIsSeries(string input)
 	{
 		var parsed = _instance.Parse(input);
-		
+
 		Assert.Equal(ReleaseType.SERIES, parsed.Type);
 	}
-	
+
 	[Theory]
 	[InlineData("Movie Name AKA Other Movie Name 1983 1080p BluRay REMUX AVC FLAC 2.0-BLURANiUM")]
 	[InlineData("Movie.Title.1987.1080p.BluRay.REMUX.DD+2.0.AVC")]
@@ -69,7 +71,7 @@ public class ReleaseParserServiceTest
 	public void Parse_ShouldIdentifyMovie_WhenReleaseIsMovie(string input)
 	{
 		var parsed = _instance.Parse(input);
-		
+
 		Assert.Equal(ReleaseType.MOVIE, parsed.Type);
 	}
 
@@ -79,27 +81,31 @@ public class ReleaseParserServiceTest
 	{
 		var parsed = _instance.Parse(input);
 
-		Assert.Contains(absoluteEpisode, parsed.SeriesReleaseData?.AbsoluteEpisodes ?? throw new InvalidOperationException());
+		Assert.Contains(absoluteEpisode,
+			parsed.SeriesReleaseData?.AbsoluteEpisodes ?? throw new InvalidOperationException());
 	}
 
 	[Theory]
 	[InlineData("[HorribleSubs] Anime - 12 [1080p].mkv", QualitySource.WEB_DL)]
 	[InlineData("[SubsPlease] Anime - 14 (1080p) [3168B4D7].mkv", QualitySource.WEB_DL)]
-	[InlineData("[Erai-raws] Anime 2nd Season - 11 [1080p][Multiple Subtitle] [ENG][POR-BR][SPA-LA][SPA][GER][ITA][RUS]", QualitySource.WEB_DL)]
+	[InlineData(
+		"[Erai-raws] Anime 2nd Season - 11 [1080p][Multiple Subtitle] [ENG][POR-BR][SPA-LA][SPA][GER][ITA][RUS]",
+		QualitySource.WEB_DL)]
 	public void Parse_ShouldApplyEdgeCaseReleaseGroupQualitySourceMapping_WhenReleaseHasUnknownSourceAndGroupMatches(
 		string input, QualitySource expected)
 	{
 		var parsed = _instance.Parse(input);
-		
+
 		Assert.Equal(expected, parsed.Quality.Resolution.Source);
 	}
 
 	[Theory]
 	[InlineData("[Erai-raws] Anime - 01 ~ 24 [BD 720p][Multiple Subtitle]", QualitySource.BLURAY)]
-	public void Parse_ShouldNotApplyEdgeCaseReleaseGroupQualitySourceMapping_IfReleaseSpecifiesQualitySource(string input, QualitySource expected)
+	public void Parse_ShouldNotApplyEdgeCaseReleaseGroupQualitySourceMapping_IfReleaseSpecifiesQualitySource(
+		string input, QualitySource expected)
 	{
 		var parsed = _instance.Parse(input);
-		
+
 		Assert.Equal(expected, parsed.Quality.Resolution.Source);
 	}
 }

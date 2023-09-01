@@ -11,7 +11,7 @@ using Submarine.Core.Util.RegEx;
 namespace Submarine.Core.Parser;
 
 /// <summary>
-///		Service which Parses the language(s) of a release
+///     Service which Parses the language(s) of a release
 /// </summary>
 public class LanguageParserService : IParser<IReadOnlyList<Language>>
 {
@@ -26,9 +26,9 @@ public class LanguageParserService : IParser<IReadOnlyList<Language>>
 	private readonly ILogger<LanguageParserService> _logger;
 
 	/// <summary>
-	/// Creates a new <see cref="LanguageParserService"/>
+	///     Creates a new <see cref="LanguageParserService" />
 	/// </summary>
-	/// <param name="logger">The logger of this <see cref="LanguageParserService"/></param>
+	/// <param name="logger">The logger of this <see cref="LanguageParserService" /></param>
 	public LanguageParserService(ILogger<LanguageParserService> logger)
 	{
 		_logger = logger;
@@ -48,10 +48,10 @@ public class LanguageParserService : IParser<IReadOnlyList<Language>>
 	}
 
 	/// <summary>
-	/// Parses the language(s) of a release
+	///     Parses the language(s) of a release
 	/// </summary>
 	/// <param name="input">The input string</param>
-	/// <returns>a <see cref="IReadOnlyList{T}"/> of Languages</returns>
+	/// <returns>a <see cref="IReadOnlyList{T}" /> of Languages</returns>
 	public IReadOnlyList<Language> Parse(string input)
 	{
 		_logger.LogDebug("Trying to parse language for {Input}", input);

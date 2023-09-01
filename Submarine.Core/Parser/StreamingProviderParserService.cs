@@ -9,7 +9,7 @@ using Submarine.Core.Util.Extensions;
 namespace Submarine.Core.Parser;
 
 /// <summary>
-/// Service which parses the Streaming Provider of releases
+///     Service which parses the Streaming Provider of releases
 /// </summary>
 public class StreamingProviderParserService : IParser<StreamingProvider?>
 {
@@ -18,9 +18,9 @@ public class StreamingProviderParserService : IParser<StreamingProvider?>
 	private readonly Dictionary<StreamingProvider, Regex> _streamingProviderRegexes;
 
 	/// <summary>
-	/// Creates a new <see cref="StreamingProviderParserService"/>
+	///     Creates a new <see cref="StreamingProviderParserService" />
 	/// </summary>
-	/// <param name="logger">The logger of this <see cref="StreamingProviderParserService"/></param>
+	/// <param name="logger">The logger of this <see cref="StreamingProviderParserService" /></param>
 	/// <exception cref="InvalidOperationException">if an StreamingProvider enum member has no Regex Attribute present</exception>
 	public StreamingProviderParserService(ILogger<StreamingProviderParserService> logger)
 	{
@@ -38,7 +38,7 @@ public class StreamingProviderParserService : IParser<StreamingProvider?>
 	}
 
 	/// <summary>
-	/// Parses the Streaming Provider of a release, if any is present
+	///     Parses the Streaming Provider of a release, if any is present
 	/// </summary>
 	/// <param name="input">The Release name</param>
 	/// <returns>The parsed Streaming Provider, if any</returns>

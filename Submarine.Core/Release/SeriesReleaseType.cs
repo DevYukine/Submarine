@@ -1,37 +1,37 @@
 namespace Submarine.Core.Release;
 
 /// <summary>
-/// The Type of a Series Release
+///     The Type of a Series Release
 /// </summary>
 public enum SeriesReleaseType
 {
 	/// <summary>
-	/// Release is a special episode of a Series 
+	///     Release is a special episode of a Series
 	/// </summary>
 	SPECIAL,
-	
+
 	/// <summary>
-	/// Release is an episode of a Series
+	///     Release is an episode of a Series
 	/// </summary>
 	EPISODE,
-	
+
 	/// <summary>
-	/// Release contains multiple absolute episode (common for anime)
+	///     Release contains multiple absolute episode (common for anime)
 	/// </summary>
 	MULTI_EPISODES,
 
 	/// <summary>
-	/// Release is a partial season of this Series
+	///     Release is a partial season of this Series
 	/// </summary>
 	PARTIAL_SEASON,
-	
+
 	/// <summary>
-	/// Release is a full season of a Series
+	///     Release is a full season of a Series
 	/// </summary>
 	FULL_SEASON,
 
 	/// <summary>
-	/// Release is containing multiple seasons of this Series
+	///     Release is containing multiple seasons of this Series
 	/// </summary>
 	MULTI_SEASON
 }

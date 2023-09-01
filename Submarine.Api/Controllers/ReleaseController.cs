@@ -26,7 +26,7 @@ public class ReleaseController : ControllerBase
 	}
 
 	[HttpGet]
-	public Task<IActionResult> GetAsync([FromQuery, Required] string title, [FromQuery, Required] Protocol protocol)
+	public Task<IActionResult> GetAsync([FromQuery] [Required] string title, [FromQuery] [Required] Protocol protocol)
 	{
 		try
 		{

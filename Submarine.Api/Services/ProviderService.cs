@@ -7,8 +7,8 @@ namespace Submarine.Api.Services;
 
 public class ProviderService
 {
-	private readonly IProviderRepository _repository;
 	private readonly ILogger<ProviderService> _logger;
+	private readonly IProviderRepository _repository;
 
 	public ProviderService(ILogger<ProviderService> logger, IProviderRepository repository)
 	{

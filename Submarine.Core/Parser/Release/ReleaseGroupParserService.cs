@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 namespace Submarine.Core.Parser.Release;
 
 /// <summary>
-/// Services to parse the Release Group of a release
+///     Services to parse the Release Group of a release
 /// </summary>
 public class ReleaseGroupParserService : IParser<string?>
 {
@@ -22,14 +22,14 @@ public class ReleaseGroupParserService : IParser<string?>
 	private readonly ILogger<ReleaseGroupParserService> _logger;
 
 	/// <summary>
-	/// Creates a new <see cref="ReleaseGroupParserService"/>
+	///     Creates a new <see cref="ReleaseGroupParserService" />
 	/// </summary>
-	/// <param name="logger">The Logger of this <see cref="ReleaseGroupParserService"/></param>
+	/// <param name="logger">The Logger of this <see cref="ReleaseGroupParserService" /></param>
 	public ReleaseGroupParserService(ILogger<ReleaseGroupParserService> logger)
 		=> _logger = logger;
 
 	/// <summary>
-	/// Parses the Release Group of a release
+	///     Parses the Release Group of a release
 	/// </summary>
 	/// <param name="input">The Release</param>
 	/// <returns>The release group, if any</returns>

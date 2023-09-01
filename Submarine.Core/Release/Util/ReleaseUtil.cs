@@ -6,7 +6,7 @@ using static Submarine.Core.MediaFile.MediaFileConstants;
 namespace Submarine.Core.Release.Util;
 
 /// <summary>
-/// Utilities for Releases
+///     Utilities for Releases
 /// </summary>
 public static class ReleaseUtil
 {
@@ -22,7 +22,7 @@ public static class ReleaseUtil
 	}, RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
 	/// <summary>
-	/// Removes the file extension from a release title
+	///     Removes the file extension from a release title
 	/// </summary>
 	/// <param name="title">The release title</param>
 	/// <returns>The replaced String</returns>

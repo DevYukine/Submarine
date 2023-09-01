@@ -9,8 +9,9 @@ namespace Submarine.Core.Util.Extensions;
 /// </summary>
 public static class StringExtensions
 {
-	private static readonly string[] Numbers = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
-	
+	private static readonly string[] Numbers =
+		{ "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
+
 	/// <summary>
 	///     Reverses the String
 	/// </summary>
@@ -37,7 +38,7 @@ public static class StringExtensions
 		=> !string.IsNullOrWhiteSpace(str);
 
 	/// <summary>
-	/// Parses an string to an integer including written out numbers
+	///     Parses an string to an integer including written out numbers
 	/// </summary>
 	/// <param name="str">Input string</param>
 	/// <returns>parsed integer</returns>
@@ -46,23 +47,17 @@ public static class StringExtensions
 	{
 		var normalized = str.Normalize(NormalizationForm.FormKC);
 
-		if (int.TryParse(normalized, out var number))
-		{
-			return number;
-		}
+		if (int.TryParse(normalized, out var number)) return number;
 
 		number = Array.IndexOf(Numbers, str.ToLower());
 
-		if (number != -1)
-		{
-			return number;
-		}
+		if (number != -1) return number;
 
 		throw new FormatException($"{str} isn't a number");
 	}
 
 	/// <summary>
-	/// Converts a string to a decimal including written out numbers
+	///     Converts a string to a decimal including written out numbers
 	/// </summary>
 	/// <param name="str">Input String</param>
 	/// <returns>parsed decimal</returns>
@@ -72,15 +67,13 @@ public static class StringExtensions
 		var normalized = str.Normalize(NormalizationForm.FormKC);
 
 		if (decimal.TryParse(normalized, NumberStyles.Float, CultureInfo.InvariantCulture, out var number))
-		{
 			return number;
-		}
 
 		throw new FormatException($"{str} isn't a number");
 	}
 
 	/// <summary>
-	///		Normalises the given Release string
+	///     Normalises the given Release string
 	/// </summary>
 	/// <param name="str">Input string</param>
 	/// <returns></returns>

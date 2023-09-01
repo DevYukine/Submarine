@@ -5,13 +5,13 @@ using Submarine.Api.Models.Database;
 namespace Submarine.Api.Repository;
 
 /// <summary>
-/// Repository Base implementation
+///     Repository Base implementation
 /// </summary>
 /// <typeparam name="T">Entity Type</typeparam>
 public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
 {
 	/// <summary>
-	/// Database Context of this Repository
+	///     Database Context of this Repository
 	/// </summary>
 	protected SubmarineDatabaseContext DatabaseContext { get; }
 
@@ -19,7 +19,7 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
 		=> DatabaseContext.Set<T>();
 
 	/// <summary>
-	/// Creates a new instance of <see cref="RepositoryBase{T}"/>
+	///     Creates a new instance of <see cref="RepositoryBase{T}" />
 	/// </summary>
 	/// <param name="databaseContext">database context</param>
 	protected RepositoryBase(SubmarineDatabaseContext databaseContext)
@@ -44,7 +44,7 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
 		await SaveAsync();
 		return entity;
 	}
-	
+
 	/// <inheritdoc />
 	public async Task<ICollection<T>> CreateAsync(ICollection<T> entities)
 	{

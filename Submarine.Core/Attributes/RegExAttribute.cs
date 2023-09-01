@@ -4,18 +4,18 @@ using System.Text.RegularExpressions;
 namespace Submarine.Core.Attributes;
 
 /// <summary>
-/// Attribute containing a regular expression
+///     Attribute containing a regular expression
 /// </summary>
 [AttributeUsage(AttributeTargets.Field)]
 public class RegExAttribute : Attribute
 {
 	/// <summary>
-	/// The regular expression
+	///     The regular expression
 	/// </summary>
 	public Regex Regex { get; }
 
 	/// <summary>
-	/// Creates a new instance of <see cref="RegExAttribute"/>
+	///     Creates a new instance of <see cref="RegExAttribute" />
 	/// </summary>
 	/// <param name="regex">The regex as string</param>
 	/// <param name="options">Options of this Regex</param>

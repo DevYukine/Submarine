@@ -5,17 +5,21 @@ using Submarine.Core.Provider;
 namespace Submarine.Api.Models.Database;
 
 /// <summary>
-/// Submarine Database Context
+///     Submarine Database Context
 /// </summary>
 public class SubmarineDatabaseContext : DbContext
 {
-	public DbSet<Provider> Providers { get; set; }
-	
 	/// <summary>
-	/// Configuration of this Database Context
+	///     Configuration of this Database Context
 	/// </summary>
 	protected readonly IConfiguration Configuration;
-	
+
+	public DbSet<Provider> Providers { get; set; }
+
+	/// <inheritdoc />
+	public SubmarineDatabaseContext(DbContextOptions options, IConfiguration configuration) : base(options)
+		=> Configuration = configuration;
+
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
 		builder.Entity<BittorrentTracker>();
@@ -23,10 +27,6 @@ public class SubmarineDatabaseContext : DbContext
 
 		base.OnModelCreating(builder);
 	}
-
-	/// <inheritdoc />
-	public SubmarineDatabaseContext(DbContextOptions options, IConfiguration configuration) : base(options)
-		=> Configuration = configuration;
 
 	/// <inheritdoc />
 	public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())

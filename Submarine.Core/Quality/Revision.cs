@@ -3,7 +3,7 @@ using System;
 namespace Submarine.Core.Quality;
 
 /// <summary>
-/// A Revision of a Quality
+///     A Revision of a Quality
 /// </summary>
 /// <param name="Version">The version of this revision, default is 1</param>
 /// <param name="IsRepack">If this revision is a repack</param>
@@ -17,7 +17,7 @@ public record Revision(
 	: IComparable<Revision>
 {
 	/// <summary>
-	/// Compares this Revision to another Revision
+	///     Compares this Revision to another Revision
 	/// </summary>
 	/// <param name="other">The other Revision</param>
 	/// <returns>1 if this Revision is higher, 0 if they are the same, -1 if the other one is higher</returns>
@@ -36,7 +36,7 @@ public record Revision(
 	}
 
 	/// <summary>
-	/// If this Revision is equal to another Revision
+	///     If this Revision is equal to another Revision
 	/// </summary>
 	/// <param name="other">The other Revision</param>
 	/// <returns>bool indicating if the two Revisions are identical</returns>
@@ -56,7 +56,7 @@ public record Revision(
 		=> HashCode.Combine(Version, IsRepack, IsProper, IsReal);
 
 	/// <summary>
-	/// Convenience method to compare two Revisions
+	///     Convenience method to compare two Revisions
 	/// </summary>
 	/// <param name="left">First Revision</param>
 	/// <param name="right">Second Revision</param>
@@ -70,7 +70,7 @@ public record Revision(
 	}
 
 	/// <summary>
-	/// Convenience method to compare two Revisions
+	///     Convenience method to compare two Revisions
 	/// </summary>
 	/// <param name="left">First Revision</param>
 	/// <param name="right">Second Revision</param>
@@ -84,7 +84,7 @@ public record Revision(
 	}
 
 	/// <summary>
-	/// Convenience method to compare two Revisions
+	///     Convenience method to compare two Revisions
 	/// </summary>
 	/// <param name="left">First Revision</param>
 	/// <param name="right">Second Revision</param>
@@ -98,7 +98,7 @@ public record Revision(
 	}
 
 	/// <summary>
-	/// Convenience method to compare two Revisions
+	///     Convenience method to compare two Revisions
 	/// </summary>
 	/// <param name="left">First Revision</param>
 	/// <param name="right">Second Revision</param>
