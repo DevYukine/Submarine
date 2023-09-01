@@ -224,6 +224,6 @@ public class LanguageParserServiceTest
 		var parsed = _instance.Parse(input);
 
 		Assert.True(parsed.Count == 1);
-		Assert.Equal(expected, parsed[0]);
+		Assert.Contains(expected, parsed);
 	}
 }
